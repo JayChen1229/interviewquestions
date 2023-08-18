@@ -19,6 +19,5 @@ public class User {
     private String coverImage;
     private String biography;
 
-    // Getters, Setters, and other necessary methods...
 }
 

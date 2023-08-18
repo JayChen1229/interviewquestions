@@ -16,16 +16,22 @@ new Vue({
                 email:this.email,
                 password:this.password,
             }
-            axios.post('/users', user)
+            axios.post('/register', user)
                  .then(response => {
                      this.user = response.data;
                  });
         },
         login: function() {
-            axios.post('/api/login', { phone: this.phone })
-                 .then(response => {
-                     this.user = response.data;
-                 });
+            console.log("dddd:" + this.email)
+            axios.post('login', null, {
+                params: {
+                    email: this.email,
+                    password: this.password
+                }
+            })
+                .then(response => {
+                    this.user = response.data;
+                });
         },
         addPost: function() {
             axios.post('/api/posts', { content: this.newPost })
