@@ -135,6 +135,32 @@ new Vue({
                     // Handle error
                 });
         },
+        openImageUploader(userId) {
+            Swal.fire({
+                title: 'Upload Avatar',
+                input: 'file',
+                showCancelButton: true,
+                confirmButtonText: 'Upload',
+                cancelButtonText: 'Cancel',
+                inputAttributes: {
+                    accept: 'image/*'
+                }
+            }).then(result => {
+                const formData = new FormData();
+                formData.append('image', result.value);
+                axios.post(`/users/${userId}/upload`, formData, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                    },
+                })
+                    .then(response => {
+                        // Handle successful image upload
+                    })
+                    .catch(error => {
+                        // Handle error
+                    });
+            });
+        },
         deletePost(postId) {
             axios.delete('/posts/' + postId)
                 .then(response => {

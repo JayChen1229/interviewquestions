@@ -5,6 +5,32 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Simple Social Media</title>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        .user-profile {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            border-bottom: 1px solid #ccc;
+        }
+
+        .user-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+
+        .user-info {
+            flex-grow: 1;
+        }
+
+        .user-name {
+            font-size: 18px;
+            font-weight: bold;
+        }
+    </style>
 </head>
 <body>
 
@@ -29,6 +55,13 @@
         </div>
     </div>
     <div v-if="user">
+        <!-- 顯示會員頭像和名稱 -->
+        <div class="user-profile">
+            <img :src="'/img/users/' + user.userId" alt="User Avatar" class="user-avatar img-thumbnail" @click="openImageUploader(user.userId)">
+            <div class="user-info">
+                <p class="user-name">Welcome, {{ user.userName }}</p>
+            </div>
+        </div>
         <h1>Post List</h1>
 
         <!-- 發表文章的按鈕 -->

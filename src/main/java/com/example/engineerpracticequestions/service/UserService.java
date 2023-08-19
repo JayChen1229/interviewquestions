@@ -1,9 +1,11 @@
 package com.example.engineerpracticequestions.service;
 
+import com.example.engineerpracticequestions.model.Post;
 import com.example.engineerpracticequestions.model.User;
 import com.example.engineerpracticequestions.repository.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -41,8 +43,21 @@ public class UserService {
         return true;
     }
 
+    // 提供img id, 得到Image 的 byte陣列
+    public byte[] findImg(Long id) {
+        User user = userRepository.findById(id).orElse(null);
+        // TripImage::getImage：引用TripImage的getImage()
+        // map (裡面對象如果存在則執行)
+        return user.getCoverImage();
+    }
+
     public void deleteUser(Long id) {
         userRepository.deleteById(id);
+    }
+
+    @Transactional
+    public void updateUserCoverImage(Long userId, byte[] coverImage) {
+        userRepository.updateUserCoverImage(userId, coverImage);
     }
 
     public User findUser(String email, String password) {

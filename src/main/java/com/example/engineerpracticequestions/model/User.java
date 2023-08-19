@@ -18,7 +18,7 @@ public class User {
     private String userName;
     private String email;
     private String password; // Hashed password
-    private String coverImage;
+    private byte[] coverImage;
     private String biography;
 
 }
