@@ -46,6 +46,11 @@
             <div class="card-body">
                 <h5 class="card-title">User: {{ post.user.userName }}</h5>
                 <p class="card-text">Content: {{ post.content }}</p>
+        <!-- 如果有圖片才顯示 -->
+                <img v-if="post.image" :src="'/img/posts/' + post.postId"
+                     alt="Post Image" class="img-fluid mb-2"
+                     style="width: 300px; height: auto; cursor: pointer;"
+                     @click="openImageModal('/img/posts/' + post.postId)">
                 <p class="card-text">Created At: {{ formatDate(post.createdAt) }}</p>
                 <button v-if="post.user.userId === user.userId" class="btn btn-primary btn-sm" @click="editPost(post)">
                     Edit

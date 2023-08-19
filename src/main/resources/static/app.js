@@ -8,7 +8,6 @@ new Vue({
         newPost: {            // 新文章的內容
             content: '',
             user: '',
-
         },
         image: '',
         coverImage: '',
@@ -22,8 +21,7 @@ new Vue({
             content: ''
         },
         comments: [],
-        showComments:false
-        
+        showComments:false,
     },
     methods: {
         register() {
@@ -96,6 +94,7 @@ new Vue({
                         if (postId) {
                             // Upload image after post is created
                             this.uploadImage(postId);
+                            this.image = null; // 清空已選擇照片
                         } else {
                             // Handle error
                         };
@@ -115,7 +114,6 @@ new Vue({
             // 重置新文章的內容並隱藏文章文字框
             this.newPost.content = '';
             this.showTextarea = false;
-            this.newPost.image = null; // 清空已選擇的圖片
         },
         handleImageUpload(event) {
             // 處理圖片上傳的事件
@@ -125,7 +123,6 @@ new Vue({
         uploadImage(postId) {
             const formData = new FormData();
             formData.append('image', this.image);
-
             axios.post(`/posts/${postId}/upload`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
@@ -166,6 +163,19 @@ new Vue({
                 .then(response => {
                     this.posts = response.data;
                 });
+        },
+
+        openImageModal(imageUrl) {
+            // 使用 SweetAlert 來彈出大圖
+            Swal.fire({
+                imageUrl: imageUrl,
+                imageAlt: 'Post Image',
+                showConfirmButton: false,
+                customClass: {
+                    image: 'img-fluid'
+                },
+                width: '80%', // 設定寬度為螢幕的 80%
+            });
         },
 
         formatDate(date) {
