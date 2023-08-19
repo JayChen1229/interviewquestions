@@ -23,7 +23,7 @@ public class Post {
     private User user;
 
     private String content;
-    private String image;
+    private byte[] image;
     private LocalDateTime createdAt;
 
     @Transient

@@ -8,8 +8,9 @@ new Vue({
         newPost: {            // 新文章的內容
             content: '',
             user: '',
-            image: ''
+
         },
+        image: '',
         coverImage: '',
         password: '',
         registerPassword: '',
@@ -25,7 +26,7 @@ new Vue({
         
     },
     methods: {
-        register: function () {
+        register() {
             let user = {
                 userName: this.userName,
                 email: this.registerEmail,
@@ -55,7 +56,7 @@ new Vue({
 
                 });
         },
-        login: function () {
+        login() {
             axios.post('/login', null, {
                 params: {
                     email: this.email,
@@ -91,6 +92,13 @@ new Vue({
                             showConfirmButton: false,
                             background: 'rgba(255, 255, 255, .7)'
                         });
+                        const postId = response.data.postId; // Assuming the response contains the postId
+                        if (postId) {
+                            // Upload image after post is created
+                            this.uploadImage(postId);
+                        } else {
+                            // Handle error
+                        };
                         this.fetchPosts();
                     } else {
                         Swal.fire({
@@ -107,6 +115,28 @@ new Vue({
             // 重置新文章的內容並隱藏文章文字框
             this.newPost.content = '';
             this.showTextarea = false;
+            this.newPost.image = null; // 清空已選擇的圖片
+        },
+        handleImageUpload(event) {
+            // 處理圖片上傳的事件
+            this.image = event.target.files[0];
+          },
+
+        uploadImage(postId) {
+            const formData = new FormData();
+            formData.append('image', this.image);
+
+            axios.post(`/posts/${postId}/upload`, formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            })
+                .then(response => {
+                    // Handle successful image upload
+                })
+                .catch(error => {
+                    // Handle error
+                });
         },
         deletePost(postId) {
             axios.delete('/posts/' + postId)

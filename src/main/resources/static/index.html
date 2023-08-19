@@ -32,12 +32,13 @@
         <h1>Post List</h1>
 
         <!-- 發表文章的按鈕 -->
-        <button @click="showTextarea = true" class="btn btn-primary mb-2">publish an article</button>
+        <button @click="showTextarea = true" class="btn btn-primary mb-2">發表文章</button>
 
-        <!-- 文章文字框 -->
+        <!-- 文章文字框和圖片上傳 -->
         <div v-if="showTextarea">
-            <textarea v-model="newPost.content" class="form-control mb-2" placeholder="Enter article content"></textarea>
-            <button @click="postPost" class="btn btn-success">publish</button>
+            <textarea v-model="newPost.content" class="form-control mb-2" placeholder="輸入文章內容"></textarea>
+            <input type="file" @change="handleImageUpload" accept="image/*" class="mb-2" />
+            <button @click="postPost" class="btn btn-success">發表</button>
         </div>
 
         <!-- 文章列表 -->
@@ -46,8 +47,12 @@
                 <h5 class="card-title">User: {{ post.user.userName }}</h5>
                 <p class="card-text">Content: {{ post.content }}</p>
                 <p class="card-text">Created At: {{ formatDate(post.createdAt) }}</p>
-                <button v-if="post.user.userId === user.userId" class="btn btn-primary btn-sm" @click="editPost(post)">Edit</button>
-                <button v-if="post.user.userId === user.userId" class="btn btn-danger btn-sm" @click="deletePost(post.postId)">Delete</button>
+                <button v-if="post.user.userId === user.userId" class="btn btn-primary btn-sm" @click="editPost(post)">
+                    Edit
+                </button>
+                <button v-if="post.user.userId === user.userId" class="btn btn-danger btn-sm"
+                        @click="deletePost(post.postId)">Delete
+                </button>
                 <!-- 留言按鈕 -->
                 <button class="btn btn-info btn-sm" @click="addComment(post)">Comment</button>
 
