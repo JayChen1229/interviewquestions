@@ -15,13 +15,13 @@ new Vue({
         registerPassword: '',
         posts: [],
         showTextarea: false, // 是否顯示文章文字框
-        comment:{
+        comment: {
             user: '',
             post: '',
             content: ''
         },
         comments: [],
-        showComments:false,
+        showComments: false,
     },
     methods: {
         register() {
@@ -65,6 +65,7 @@ new Vue({
                     if (response.data) {
                         // 登入成功，放入user資料
                         this.user = response.data;
+                        this.user.imgUrl = '/img/users/' + this.user.userId;
                     } else {
                         Swal.fire({
                             position: 'top',
@@ -91,14 +92,10 @@ new Vue({
                             background: 'rgba(255, 255, 255, .7)'
                         });
                         const postId = response.data.postId; // Assuming the response contains the postId
-                        if (postId) {
-                            // Upload image after post is created
-                            this.uploadImage(postId);
-                            this.image = null; // 清空已選擇照片
-                        } else {
-                            // Handle error
-                        };
-                        this.fetchPosts();
+
+                        // Upload image after post is created
+                        this.uploadImage(postId);
+                        this.image = null; // 清空已選擇照片
                     } else {
                         Swal.fire({
                             position: 'top',
@@ -112,13 +109,14 @@ new Vue({
                 });
 
             // 重置新文章的內容並隱藏文章文字框
+            this.fetchPosts();
             this.newPost.content = '';
             this.showTextarea = false;
         },
         handleImageUpload(event) {
             // 處理圖片上傳的事件
             this.image = event.target.files[0];
-          },
+        },
 
         uploadImage(postId) {
             const formData = new FormData();
@@ -155,6 +153,13 @@ new Vue({
                 })
                     .then(response => {
                         // Handle successful image upload
+                        this.user.imgUrl = '/img/users/' + this.user.userId + '?rand=' + Math.random();
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'uploaded successfully',
+                            showConfirmButton: false,
+                            timer: 1500
+                        })
                     })
                     .catch(error => {
                         // Handle error
@@ -227,10 +232,7 @@ new Vue({
                 cancelButtonText: 'Cancel',
             }).then((result) => {
                 if (result.isConfirmed) {
-                    const editedContent = result.value;
-                    // 在這裡你可以實現保存編輯內容的邏輯
-                    console.log('Saving edited content:', editedContent);
-                    post.content = editedContent;
+                    post.content = result.value;
                     axios.post('/posts', post)
                         .then(response => {
                             if (response) {
@@ -277,7 +279,6 @@ new Vue({
                     console.log(this.comment);
 
 
-        
                     axios.post('/comments', this.comment)
                         .then(response => {
                             if (response) {

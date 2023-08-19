@@ -21,5 +21,8 @@ public class User {
     private byte[] coverImage;
     private String biography;
 
+    @Transient
+    private String imgUrl;
+
 }
 
