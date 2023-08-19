@@ -19,18 +19,12 @@ public class UserService {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
     }
-
-    public List<User> getAllUsers() {
-        return userRepository.findAll();
-    }
-
     public User getUserById(Long id) {
         return userRepository.findById(id).orElse(null);
     }
 
     public Boolean saveUser(User user) {
         String email = user.getEmail();
-
         // 檢查資料庫中是否已經存在相同的電子郵件地址
         if (userRepository.existsByEmail(email)) {
             System.out.println("Email already exists");
@@ -51,10 +45,6 @@ public class UserService {
         return user.getCoverImage();
     }
 
-    public void deleteUser(Long id) {
-        userRepository.deleteById(id);
-    }
-
     @Transactional
     public void updateUserCoverImage(Long userId, byte[] coverImage) {
         userRepository.updateUserCoverImage(userId, coverImage);
@@ -70,7 +60,6 @@ public class UserService {
             // 密碼匹配，返回使用者
             return user;
         }
-
         return null; // 密碼不匹配，返回 null
     }
 

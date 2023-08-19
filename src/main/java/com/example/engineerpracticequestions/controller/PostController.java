@@ -21,11 +21,6 @@ public class PostController {
         return postService.getAllPosts();
     }
 
-    @GetMapping("/{id}")
-    public Post getPostById(@PathVariable Long id) {
-        return postService.getPostById(id);
-    }
-
     @PostMapping
     public Post createPost(@RequestBody Post post) {
         return postService.savePost(post);
@@ -43,7 +38,7 @@ public class PostController {
                 System.out.println("上傳失敗");
             }
         } else {
-            System.out.println("上船失敗");
+            System.out.println("上傳失敗");
         }
     }
 

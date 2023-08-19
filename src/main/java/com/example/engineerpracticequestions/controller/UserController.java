@@ -18,17 +18,6 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-//    @PostMapping
-//    public User createUser(@RequestBody User user) {
-//        return userService.saveUser(user);
-//    }
-
-    @GetMapping
-    public List<User> getAllUsers() {
-        return userService.getAllUsers();
-    }
-
-
     @PostMapping("/{userId}/upload")
     public void uploadImage(@PathVariable Long userId, @RequestParam MultipartFile image) {
         User user = userService.getUserById(userId);
@@ -42,18 +31,6 @@ public class UserController {
         } else {
             System.out.println("上傳失敗");
         }
-    }
-
-    @GetMapping("/{id}")
-    public User getUserById(@PathVariable Long id) {
-        return userService.getUserById(id);
-    }
-
-
-
-    @DeleteMapping("/{id}")
-    public void deleteUser(@PathVariable Long id) {
-        userService.deleteUser(id);
     }
 }
 

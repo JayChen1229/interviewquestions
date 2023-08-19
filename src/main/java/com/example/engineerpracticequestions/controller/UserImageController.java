@@ -10,9 +10,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class UserImageController {
-
-    public static String IMG_URL = "/img/users/";
-
     private final UserService userService;
 
     @Autowired
