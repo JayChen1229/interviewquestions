@@ -57,21 +57,26 @@
     <div v-if="user">
         <!-- 顯示會員頭像和名稱 -->
         <div class="user-profile">
-            <img :src="user.imgUrl + '?rand=' + Math.random()" alt="User Avatar" class="user-avatar img-thumbnail" @click="openImageUploader(user.userId)">
+            <img :src="user.imgUrl + '?rand=' + Math.random()" alt="User Avatar" class="user-avatar img-thumbnail"
+                 @click="openImageUploader(user.userId)">
             <div class="user-info">
                 <p class="user-name">Welcome, {{ user.userName }}</p>
+                <button @click="logout" class="btn btn-danger">Logout</button>
             </div>
         </div>
         <h1>Post List</h1>
 
         <!-- 發表文章的按鈕 -->
-        <button @click="showTextarea = true" class="btn btn-primary mb-2">發表文章</button>
+        <button @click="showTextarea = true" class="btn btn-primary mb-2">
+            publish an article
+        </button>
 
         <!-- 文章文字框和圖片上傳 -->
         <div v-if="showTextarea">
-            <textarea v-model="newPost.content" class="form-control mb-2" placeholder="輸入文章內容"></textarea>
-            <input type="file" @change="handleImageUpload" accept="image/*" class="mb-2" />
-            <button @click="postPost" class="btn btn-success">發表</button>
+            <textarea class="form-control mb-2" placeholder="Please enter the content of the article"
+                      @input="updateContent"></textarea>
+            <input type="file" @change="handleImageUpload" accept="image/*" class="mb-2"/>
+            <button @click="postPost" class="btn btn-success">publish</button>
         </div>
 
         <!-- 文章列表 -->
@@ -79,7 +84,7 @@
             <div class="card-body">
                 <h5 class="card-title">User: {{ post.user.userName }}</h5>
                 <p class="card-text">Content: {{ post.content }}</p>
-        <!-- 如果有圖片才顯示 -->
+                <!-- 如果有圖片才顯示 -->
                 <img v-if="post.image" :src="'/img/posts/' + post.postId"
                      alt="Post Image" class="img-fluid mb-2"
                      style="width: 300px; height: auto; cursor: pointer;"
@@ -92,7 +97,7 @@
                         @click="deletePost(post.postId)">Delete
                 </button>
                 <!-- 留言按鈕 -->
-                <button class="btn btn-info btn-sm" @click="addComment(post)">Comment</button>
+                <button class="btn btn-info btn-sm" @click="addComment(post)">Add Comment</button>
 
                 <!-- 顯示留言按鈕 -->
                 <button class="btn btn-info btn-sm" @click="toggleComments(post)">Show Comments</button>

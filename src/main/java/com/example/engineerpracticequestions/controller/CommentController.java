@@ -20,21 +20,13 @@ public class CommentController {
         return commentService.getAllComments();
     }
 
-//    @GetMapping("/{postId}")
-//    public List<Comment> getAllCommentsByPostId(@PathVariable Long postId) {
-//        List<Comment> allCommentsByPostId = commentService.getAllCommentsByPostId(postId);
-//        return allCommentsByPostId;
-//    }
-
     @PostMapping ("/post")
     public List<Comment> getCommentByPostId(@RequestBody Post post) {
-        System.out.println(commentService.getCommentsByPost(post).toString());
         return commentService.getCommentsByPost(post);
     }
 
     @PostMapping
     public Comment createComment(@RequestBody Comment comment) {
-        System.out.println(comment.toString());
         return commentService.saveComment(comment);
     }
 

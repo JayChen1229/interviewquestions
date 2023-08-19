@@ -78,9 +78,12 @@ new Vue({
 
                 });
         },
+        logout() {
+            // 登出，移除user資料
+            this.user = null;
+        },
         postPost() {
             this.newPost.user = this.user;
-
             axios.post('/posts', this.newPost)
                 .then(response => {
                     if (response) {
@@ -96,6 +99,7 @@ new Vue({
                         // Upload image after post is created
                         this.uploadImage(postId);
                         this.image = null; // 清空已選擇照片
+                        this.fetchPosts();  // 上傳成功 則刷新文章列表
                     } else {
                         Swal.fire({
                             position: 'top',
@@ -109,9 +113,13 @@ new Vue({
                 });
 
             // 重置新文章的內容並隱藏文章文字框
-            this.fetchPosts();
             this.newPost.content = '';
             this.showTextarea = false;
+        },
+
+        // 文字更新事件
+        updateContent(event) {
+            this.newPost.content = event.target.value;
         },
         handleImageUpload(event) {
             // 處理圖片上傳的事件
@@ -119,19 +127,23 @@ new Vue({
         },
 
         uploadImage(postId) {
-            const formData = new FormData();
-            formData.append('image', this.image);
-            axios.post(`/posts/${postId}/upload`, formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data',
-                },
-            })
-                .then(response => {
-                    // Handle successful image upload
+            // 如果圖片存在
+            if(this.image){
+                const formData = new FormData();
+                formData.append('image', this.image);
+                axios.post(`/posts/${postId}/upload`, formData, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                    },
                 })
-                .catch(error => {
-                    // Handle error
-                });
+                    .then(response => {
+                        // 照片上傳後再次重置新文章的內容
+                        this.fetchPosts();
+                    })
+                    .catch(error => {
+                        // Handle error
+                    });
+            }
         },
         openImageUploader(userId) {
             Swal.fire({
