@@ -43,9 +43,9 @@
         <!-- 文章列表 -->
         <div class="card" v-for="post in posts" :key="post.postId">
             <div class="card-body">
-                <h5 class="card-title">userName: {{ post.user.userName }}</h5>
-                <p class="card-text">content: {{ post.content }}</p>
-                <p class="card-text">Created at: {{ post.createdAt }}</p>
+                <h5 class="card-title">User: {{ post.user.userName }}</h5>
+                <p class="card-text">Content: {{ post.content }}</p>
+                <p class="card-text">Created At: {{ formatDate(post.createdAt) }}</p>
                 <button class="btn btn-danger btn-sm" @click="deletePost(post.postId)">Delete</button>
             </div>
         </div>

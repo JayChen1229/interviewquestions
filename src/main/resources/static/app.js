@@ -13,7 +13,6 @@ new Vue({
         coverImage:'',
         password:'',
         registerPassword:'',
-
         posts: [],
         showTextarea: false // 是否顯示文章文字框
     },
@@ -77,13 +76,11 @@ new Vue({
                 });
         },
         postPost() {
-            // 將新文章添加到文章列表中
-            // this.posts.push(this.newPost);
+
 
             console.log(this.user);
             this.newPost.user = this.user;
 
-            // FIXME:
             axios.post('/posts', this.newPost)
                 .then(response => {
                     if(response){
@@ -140,7 +137,17 @@ new Vue({
                     this.posts = response.data;
                     console.log(this.posts);
                 });
+        },
+
+        formatDate(date) {
+            const options = { year: 'numeric', month: 'short', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' };
+            const formatter = new Intl.DateTimeFormat(undefined, options);
+            const formattedDate = formatter.format(new Date(date));
+            console.log(formattedDate);
+            return formattedDate;
         }
+
+        
 
     },
     created() {

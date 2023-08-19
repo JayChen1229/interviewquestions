@@ -16,6 +16,8 @@ public class PostController {
 
     @GetMapping
     public List<Post> getAllPosts() {
+        System.out.println("dd");
+        List<Post> allPosts = postService.getAllPosts();
         return postService.getAllPosts();
     }
 
