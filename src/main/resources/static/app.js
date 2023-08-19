@@ -5,11 +5,17 @@ new Vue({
         email: '',
         registerEmail: '',
         user: null,
-        newPost: '',
+        newPost: {            // 新文章的內容
+            content: '',
+            user:'',
+            image:''
+        },
         coverImage:'',
         password:'',
         registerPassword:'',
-        posts: []
+
+        posts: [],
+        showTextarea: false // 是否顯示文章文字框
     },
     methods: {
         register: function() {
@@ -55,6 +61,9 @@ new Vue({
                     if(response.data){
                         // 登入成功，放入user資料
                         this.user = response.data;
+
+                        // test
+                        console.log(this.user.userId)
                     }else{
                         Swal.fire({
                             position: 'top',
@@ -67,24 +76,75 @@ new Vue({
 
                 });
         },
-        addPost: function() {
-            axios.post('/api/posts', { content: this.newPost })
-                 .then(response => {
-                     this.posts.unshift(response.data);
-                     this.newPost = '';
-                 });
+        postPost() {
+            // 將新文章添加到文章列表中
+            // this.posts.push(this.newPost);
+
+            console.log(this.user);
+            this.newPost.user = this.user;
+
+            // FIXME:
+            axios.post('/posts', this.newPost)
+                .then(response => {
+                    if(response){
+                        Swal.fire({
+                            position: 'top',
+                            title: '發表成功',
+                            timer: 1500,
+                            showConfirmButton: false,
+                            background: 'rgba(255, 255, 255, .7)'
+                        });
+                    }else{
+                        Swal.fire({
+                            position: 'top',
+                            title: '發表失敗',
+                            timer: 1500,
+                            showConfirmButton: false,
+                            background: 'rgba(255, 255, 255, .7)'
+                        });
+                    }
+
+                });
+
+            // 重置新文章的內容並隱藏文章文字框
+            this.newPost.content = '';
+            this.showTextarea = false;
+            this.fetchPosts();
         },
-        deletePost: function(postId) {
-            axios.delete('/api/posts/' + postId)
-                 .then(() => {
-                     this.posts = this.posts.filter(post => post.id !== postId);
-                 });
+        deletePost(postId) {
+            axios.delete('/posts/'+postId)
+                .then(response => {
+                    if(response){
+                        Swal.fire({
+                            position: 'top',
+                            title: '刪除成功',
+                            timer: 1500,
+                            showConfirmButton: false,
+                            background: 'rgba(255, 255, 255, .7)'
+                        });
+                        this.fetchPosts();
+                    }else{
+                        Swal.fire({
+                            position: 'top',
+                            title: '刪除失敗',
+                            timer: 1500,
+                            showConfirmButton: false,
+                            background: 'rgba(255, 255, 255, .7)'
+                        });
+                    }
+                });
+        },
+        fetchPosts() {
+            axios.get('/posts')
+                .then(response => {
+                    this.posts = response.data;
+                    console.log(this.posts);
+                });
         }
+
     },
-    created: function() {
-        axios.get('/api/posts')
-             .then(response => {
-                 this.posts = response.data;
-             });
+    created() {
+        // 在 Vue 實例創建時獲取文章列表
+        this.fetchPosts();
     }
 });

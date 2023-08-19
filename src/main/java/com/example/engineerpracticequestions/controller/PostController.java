@@ -26,6 +26,7 @@ public class PostController {
 
     @PostMapping
     public Post createPost(@RequestBody Post post) {
+        System.out.println(post.toString());
         return postService.savePost(post);
     }
 

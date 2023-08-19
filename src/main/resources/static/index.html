@@ -29,21 +29,25 @@
         </div>
     </div>
     <div v-if="user">
-        <!-- 發文區塊 -->
-        <div>
-            <textarea v-model="newPost" class="form-control mb-2" placeholder="What's on your mind?"></textarea>
-            <button @click="addPost" class="btn btn-success mb-4">Post</button>
+        <h1>Post List</h1>
+
+        <!-- 發表文章的按鈕 -->
+        <button @click="showTextarea = true" class="btn btn-primary mb-2">發表文章</button>
+
+        <!-- 文章文字框 -->
+        <div v-if="showTextarea">
+            <textarea v-model="newPost.content" class="form-control mb-2" placeholder="輸入文章內容"></textarea>
+            <button @click="postPost" class="btn btn-success">發表</button>
         </div>
 
-        <!-- 所有文章區塊 -->
-        <div v-for="post in posts" :key="post.id" class="mb-4">
-            <div class="card">
-                <div class="card-body">
-                    <p class="card-text">{{ post.content }}</p>
-                    <button class="btn btn-danger btn-sm" @click="deletePost(post.id)">Delete</button>
-                </div>
+        <!-- 文章列表 -->
+        <div class="card" v-for="post in posts" :key="post.postId">
+            <div class="card-body">
+                <h5 class="card-title">userName: {{ post.user.userName }}</h5>
+                <p class="card-text">content: {{ post.content }}</p>
+                <p class="card-text">Created at: {{ post.createdAt }}</p>
+                <button class="btn btn-danger btn-sm" @click="deletePost(post.postId)">Delete</button>
             </div>
-            <!-- 留言功能... -->
         </div>
     </div>
 </div>
