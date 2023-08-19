@@ -89,15 +89,16 @@ new Vue({
                     if(response){
                         Swal.fire({
                             position: 'top',
-                            title: '發表成功',
+                            title: 'Successfully published',
                             timer: 1500,
                             showConfirmButton: false,
                             background: 'rgba(255, 255, 255, .7)'
                         });
+                        this.fetchPosts();
                     }else{
                         Swal.fire({
                             position: 'top',
-                            title: '發表失敗',
+                            title: 'Failed to publish',
                             timer: 1500,
                             showConfirmButton: false,
                             background: 'rgba(255, 255, 255, .7)'
@@ -109,7 +110,6 @@ new Vue({
             // 重置新文章的內容並隱藏文章文字框
             this.newPost.content = '';
             this.showTextarea = false;
-            this.fetchPosts();
         },
         deletePost(postId) {
             axios.delete('/posts/'+postId)
@@ -117,7 +117,7 @@ new Vue({
                     if(response){
                         Swal.fire({
                             position: 'top',
-                            title: '刪除成功',
+                            title: 'successfully deleted',
                             timer: 1500,
                             showConfirmButton: false,
                             background: 'rgba(255, 255, 255, .7)'
@@ -126,7 +126,7 @@ new Vue({
                     }else{
                         Swal.fire({
                             position: 'top',
-                            title: '刪除失敗',
+                            title: 'failed to delete',
                             timer: 1500,
                             showConfirmButton: false,
                             background: 'rgba(255, 255, 255, .7)'
