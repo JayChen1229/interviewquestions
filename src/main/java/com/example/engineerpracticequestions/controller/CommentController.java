@@ -26,6 +26,7 @@ public class CommentController {
 
     @PostMapping
     public Comment createComment(@RequestBody Comment comment) {
+        System.out.println(comment.toString());
         return commentService.saveComment(comment);
     }
 

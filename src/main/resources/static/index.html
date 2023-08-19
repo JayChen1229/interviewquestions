@@ -32,12 +32,12 @@
         <h1>Post List</h1>
 
         <!-- 發表文章的按鈕 -->
-        <button @click="showTextarea = true" class="btn btn-primary mb-2">發表文章</button>
+        <button @click="showTextarea = true" class="btn btn-primary mb-2">publish an article</button>
 
         <!-- 文章文字框 -->
         <div v-if="showTextarea">
-            <textarea v-model="newPost.content" class="form-control mb-2" placeholder="輸入文章內容"></textarea>
-            <button @click="postPost" class="btn btn-success">發表</button>
+            <textarea v-model="newPost.content" class="form-control mb-2" placeholder="Enter article content"></textarea>
+            <button @click="postPost" class="btn btn-success">publish</button>
         </div>
 
         <!-- 文章列表 -->
@@ -48,10 +48,10 @@
                 <p class="card-text">Created At: {{ formatDate(post.createdAt) }}</p>
                 <button v-if="post.user.userId === user.userId" class="btn btn-primary btn-sm" @click="editPost(post)">Edit</button>
                 <button v-if="post.user.userId === user.userId" class="btn btn-danger btn-sm" @click="deletePost(post.postId)">Delete</button>
+                <!-- 留言按鈕 -->
+                <button class="btn btn-info btn-sm" @click="addComment(post)">Leave a Comment</button>
             </div>
         </div>
-
-
     </div>
 </div>
 

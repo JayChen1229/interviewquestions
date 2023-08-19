@@ -7,49 +7,52 @@ new Vue({
         user: null,
         newPost: {            // 新文章的內容
             content: '',
-            user:'',
-            image:''
+            user: '',
+            image: ''
         },
-        coverImage:'',
-        password:'',
-        registerPassword:'',
+        coverImage: '',
+        password: '',
+        registerPassword: '',
         posts: [],
-        showTextarea: false // 是否顯示文章文字框
+        showTextarea: false, // 是否顯示文章文字框
+        comment:{
+            user: '',
+            post: '',
+            content: ''
+        }
     },
     methods: {
-        register: function() {
-            let user={
-                userName:this.userName,
-                email:this.registerEmail,
-                password:this.registerPassword,
+        register: function () {
+            let user = {
+                userName: this.userName,
+                email: this.registerEmail,
+                password: this.registerPassword,
             }
             axios.post('/register', user)
-                 .then(response => {
-                    if(response.data){
-                        console.log(response.data);
+                .then(response => {
+                    if (response.data) {
                         Swal.fire({
                             position: 'top',
                             title: 'Registration success',
                             timer: 1500,
                             showConfirmButton: false,
                             background: 'rgba(255, 255, 255, .7)'
-                          });
-                    }else{
-                        console.log(response.data);
+                        });
+                    } else {
                         Swal.fire({
-                            
+
                             position: 'top',
                             title: 'This mailbox is already registered',
                             timer: 1500,
                             showConfirmButton: false,
                             background: 'rgba(255, 255, 255, .7)'
-                          });
+                        });
                     }
-                   
-                 
-                 });
+
+
+                });
         },
-        login: function() {
+        login: function () {
             axios.post('/login', null, {
                 params: {
                     email: this.email,
@@ -57,13 +60,10 @@ new Vue({
                 }
             })
                 .then(response => {
-                    if(response.data){
+                    if (response.data) {
                         // 登入成功，放入user資料
                         this.user = response.data;
-
-                        // test
-                        console.log(this.user.userId)
-                    }else{
+                    } else {
                         Swal.fire({
                             position: 'top',
                             title: 'Login failed',
@@ -76,14 +76,11 @@ new Vue({
                 });
         },
         postPost() {
-
-
-            console.log(this.user);
             this.newPost.user = this.user;
 
             axios.post('/posts', this.newPost)
                 .then(response => {
-                    if(response){
+                    if (response) {
                         Swal.fire({
                             position: 'top',
                             title: 'Successfully published',
@@ -92,7 +89,7 @@ new Vue({
                             background: 'rgba(255, 255, 255, .7)'
                         });
                         this.fetchPosts();
-                    }else{
+                    } else {
                         Swal.fire({
                             position: 'top',
                             title: 'Failed to publish',
@@ -109,9 +106,9 @@ new Vue({
             this.showTextarea = false;
         },
         deletePost(postId) {
-            axios.delete('/posts/'+postId)
+            axios.delete('/posts/' + postId)
                 .then(response => {
-                    if(response){
+                    if (response) {
                         Swal.fire({
                             position: 'top',
                             title: 'successfully deleted',
@@ -120,7 +117,7 @@ new Vue({
                             background: 'rgba(255, 255, 255, .7)'
                         });
                         this.fetchPosts();
-                    }else{
+                    } else {
                         Swal.fire({
                             position: 'top',
                             title: 'failed to delete',
@@ -135,22 +132,110 @@ new Vue({
             axios.get('/posts')
                 .then(response => {
                     this.posts = response.data;
-                    console.log(this.posts);
                 });
         },
 
         formatDate(date) {
-            const options = { year: 'numeric', month: 'short', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' };
+            const options = {
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric',
+                hour: 'numeric',
+                minute: 'numeric',
+                second: 'numeric'
+            };
             const formatter = new Intl.DateTimeFormat(undefined, options);
             const formattedDate = formatter.format(new Date(date));
-            console.log(formattedDate);
             return formattedDate;
         },
         editPost(post) {
-            // 在這裡你可以導航到文章編輯頁面，或者顯示一個彈出視窗等等
-            // 你可以在這個方法中實現你想要的編輯文章的邏輯
-            // 例如，導航到編輯頁面，將 post 資料傳遞給該頁面，讓用戶進行編輯
+            Swal.fire({
+                title: 'Edit Content',
+                input: 'textarea',
+                inputValue: post.content,
+                showCancelButton: true,
+                confirmButtonText: 'Save',
+                cancelButtonText: 'Cancel',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    const editedContent = result.value;
+                    // 在這裡你可以實現保存編輯內容的邏輯
+                    console.log('Saving edited content:', editedContent);
+                    post.content = editedContent;
+                    axios.post('/posts', post)
+                        .then(response => {
+                            if (response) {
+                                Swal.fire({
+                                    position: 'top',
+                                    title: 'Successfully modified',
+                                    timer: 1500,
+                                    showConfirmButton: false,
+                                    background: 'rgba(255, 255, 255, .7)'
+                                });
+                                this.fetchPosts();
+                            } else {
+                                Swal.fire({
+                                    position: 'top',
+                                    title: 'fail to edit',
+                                    timer: 1500,
+                                    showConfirmButton: false,
+                                    background: 'rgba(255, 255, 255, .7)'
+                                });
+                            }
+
+                        });
+                }
+            });
+        },
+        // 添加留言
+        addComment(post) {
+            Swal.fire({
+                title: 'Edit Content',
+                input: 'textarea',
+                // inputValue: this.comment.content,
+                showCancelButton: true,
+                confirmButtonText: 'Save',
+                cancelButtonText: 'Cancel',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    console.log(result.value);
+                    this.comment.content = result.value;
+
+                    // 在這裡你可以實現保存編輯內容的邏輯
+                    this.comment.user = this.user;
+                    this.comment.post = post;
+
+                    console.log(this.comment);
+
+
+        
+                    axios.post('/comments', this.comment)
+                        .then(response => {
+                            if (response) {
+                                Swal.fire({
+                                    position: 'top',
+                                    title: 'Successfully modified',
+                                    timer: 1500,
+                                    showConfirmButton: false,
+                                    background: 'rgba(255, 255, 255, .7)'
+                                });
+                                this.fetchPosts();
+                            } else {
+                                Swal.fire({
+                                    position: 'top',
+                                    title: 'fail to edit',
+                                    timer: 1500,
+                                    showConfirmButton: false,
+                                    background: 'rgba(255, 255, 255, .7)'
+                                });
+                            }
+
+                        });
+                }
+            });
         }
+
+
 
     },
     created() {
