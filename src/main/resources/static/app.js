@@ -3,27 +3,49 @@ new Vue({
     data: {
         userName: '',
         email: '',
+        registerEmail: '',
         user: null,
         newPost: '',
         coverImage:'',
         password:'',
+        registerPassword:'',
         posts: []
     },
     methods: {
         register: function() {
             let user={
                 userName:this.userName,
-                email:this.email,
-                password:this.password,
+                email:this.registerEmail,
+                password:this.registerPassword,
             }
             axios.post('/register', user)
                  .then(response => {
-                     this.user = response.data;
+                    if(response.data){
+                        console.log(response.data);
+                        Swal.fire({
+                            position: 'top',
+                            title: 'Registration success',
+                            timer: 1500,
+                            showConfirmButton: false,
+                            background: 'rgba(255, 255, 255, .7)'
+                          });
+                    }else{
+                        console.log(response.data);
+                        Swal.fire({
+                            
+                            position: 'top',
+                            title: 'This mailbox is already registered',
+                            timer: 1500,
+                            showConfirmButton: false,
+                            background: 'rgba(255, 255, 255, .7)'
+                          });
+                    }
+                   
+                 
                  });
         },
         login: function() {
-            console.log("dddd:" + this.email)
-            axios.post('login', null, {
+            axios.post('/login', null, {
                 params: {
                     email: this.email,
                     password: this.password

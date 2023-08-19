@@ -15,8 +15,8 @@
     <div class="mb-3">
         <h4>Register</h4>
         <input v-model="userName" placeholder="User Name" class="form-control mb-2" />
-        <input v-model="email" type="email" placeholder="Email" class="form-control mb-2" />
-        <input v-model="password" type="password" placeholder="Password" class="form-control mb-2" />
+        <input v-model="registerEmail" type="email" placeholder="Email" class="form-control mb-2" />
+        <input v-model="registerPassword" type="password" placeholder="Password" class="form-control mb-2" />
         <button @click="register" class="btn btn-primary mb-2">Register</button>
     </div>
 
@@ -28,8 +28,6 @@
         <button @click="login" class="btn btn-secondary mb-2">Login</button>
     </div>
 </div>
-
-
     <!-- 發文區塊 -->
     <div v-if="user">
         <textarea v-model="newPost" class="form-control mb-2" placeholder="What's on your mind?"></textarea>
@@ -46,6 +44,9 @@
         </div>
     </div>
 </div>
+
+<!-- ============================================== sweetAlert ============================================== -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/axios@0.21.1/dist/axios.min.js"></script>

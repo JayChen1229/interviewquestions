@@ -15,10 +15,10 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @PostMapping
-    public User createUser(@RequestBody User user) {
-        return userService.saveUser(user);
-    }
+//    @PostMapping
+//    public User createUser(@RequestBody User user) {
+//        return userService.saveUser(user);
+//    }
 
     @GetMapping
     public List<User> getAllUsers() {
