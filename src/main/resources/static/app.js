@@ -52,7 +52,19 @@ new Vue({
                 }
             })
                 .then(response => {
-                    this.user = response.data;
+                    if(response.data){
+                        // 登入成功，放入user資料
+                        this.user = response.data;
+                    }else{
+                        Swal.fire({
+                            position: 'top',
+                            title: 'Login failed',
+                            timer: 1500,
+                            showConfirmButton: false,
+                            background: 'rgba(255, 255, 255, .7)'
+                        });
+                    }
+
                 });
         },
         addPost: function() {

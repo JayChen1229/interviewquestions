@@ -9,30 +9,33 @@
 <body>
 
 <div id="app" class="container mt-5">
-   <!-- 註冊和登入區塊 -->
-<div v-if="!user">
-    <!-- 註冊區塊 -->
-    <div class="mb-3">
-        <h4>Register</h4>
-        <input v-model="userName" placeholder="User Name" class="form-control mb-2" />
-        <input v-model="registerEmail" type="email" placeholder="Email" class="form-control mb-2" />
-        <input v-model="registerPassword" type="password" placeholder="Password" class="form-control mb-2" />
-        <button @click="register" class="btn btn-primary mb-2">Register</button>
-    </div>
+    <!-- 註冊和登入區塊 -->
+    <div v-if="!user">
+        <!-- 註冊區塊 -->
+        <div class="mb-3">
+            <h4>Register</h4>
+            <input v-model="userName" placeholder="User Name" class="form-control mb-2"/>
+            <input v-model="registerEmail" type="email" placeholder="Email" class="form-control mb-2"/>
+            <input v-model="registerPassword" type="password" placeholder="Password" class="form-control mb-2"/>
+            <button @click="register" class="btn btn-primary mb-2">Register</button>
+        </div>
 
-    <!-- 登入區塊 -->
-    <div class="mb-3">
-        <h4>Login</h4>
-        <input v-model="email" placeholder="User Name or Email" class="form-control mb-2" />
-        <input v-model="password" type="password" placeholder="Password" class="form-control mb-2" />
-        <button @click="login" class="btn btn-secondary mb-2">Login</button>
+        <!-- 登入區塊 -->
+        <div class="mb-3">
+            <h4>Login</h4>
+            <input v-model="email" placeholder="User Name or Email" class="form-control mb-2"/>
+            <input v-model="password" type="password" placeholder="Password" class="form-control mb-2"/>
+            <button @click="login" class="btn btn-secondary mb-2">Login</button>
+        </div>
     </div>
-</div>
-    <!-- 發文區塊 -->
     <div v-if="user">
-        <textarea v-model="newPost" class="form-control mb-2" placeholder="What's on your mind?"></textarea>
-        <button @click="addPost" class="btn btn-success mb-4">Post</button>
-        
+        <!-- 發文區塊 -->
+        <div>
+            <textarea v-model="newPost" class="form-control mb-2" placeholder="What's on your mind?"></textarea>
+            <button @click="addPost" class="btn btn-success mb-4">Post</button>
+        </div>
+
+        <!-- 所有文章區塊 -->
         <div v-for="post in posts" :key="post.id" class="mb-4">
             <div class="card">
                 <div class="card-body">
