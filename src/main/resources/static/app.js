@@ -145,9 +145,12 @@ new Vue({
             const formattedDate = formatter.format(new Date(date));
             console.log(formattedDate);
             return formattedDate;
+        },
+        editPost(post) {
+            // 在這裡你可以導航到文章編輯頁面，或者顯示一個彈出視窗等等
+            // 你可以在這個方法中實現你想要的編輯文章的邏輯
+            // 例如，導航到編輯頁面，將 post 資料傳遞給該頁面，讓用戶進行編輯
         }
-
-        
 
     },
     created() {

@@ -46,9 +46,12 @@
                 <h5 class="card-title">User: {{ post.user.userName }}</h5>
                 <p class="card-text">Content: {{ post.content }}</p>
                 <p class="card-text">Created At: {{ formatDate(post.createdAt) }}</p>
-                <button class="btn btn-danger btn-sm" @click="deletePost(post.postId)">Delete</button>
+                <button v-if="post.user.userId === user.userId" class="btn btn-primary btn-sm" @click="editPost(post)">Edit</button>
+                <button v-if="post.user.userId === user.userId" class="btn btn-danger btn-sm" @click="deletePost(post.postId)">Delete</button>
             </div>
         </div>
+
+
     </div>
 </div>
 
