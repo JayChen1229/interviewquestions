@@ -19,7 +19,10 @@ new Vue({
             user: '',
             post: '',
             content: ''
-        }
+        },
+        comments: [],
+        showComments:false
+        
     },
     methods: {
         register: function () {
@@ -233,10 +236,26 @@ new Vue({
                         });
                 }
             });
+        },
+        // 切換顯示/隱藏留言列表
+        toggleComments(post) {
+            axios.post('/comments/post', post)
+                .then(response => {
+                    if (response.data) {
+                        this.comments = response.data;
+                        const commentList = this.comments.map(comment => `${comment.user.userName}: ${comment.content}`).join('<br>');
+
+                        Swal.fire({
+                            title: 'Comments',
+                            html: commentList,
+                            showCancelButton: false,
+                            showConfirmButton: true
+                        });
+                    } else {
+                        console.log("fail");
+                    }
+                });
         }
-
-
-
     },
     created() {
         // 在 Vue 實例創建時獲取文章列表

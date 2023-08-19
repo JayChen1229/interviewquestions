@@ -26,6 +26,9 @@ public class Post {
     private String image;
     private LocalDateTime createdAt;
 
+    @Transient
+    private Comment comment;
+
     // Getters, Setters, and other necessary methods...
 }
 

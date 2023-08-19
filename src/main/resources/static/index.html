@@ -49,7 +49,10 @@
                 <button v-if="post.user.userId === user.userId" class="btn btn-primary btn-sm" @click="editPost(post)">Edit</button>
                 <button v-if="post.user.userId === user.userId" class="btn btn-danger btn-sm" @click="deletePost(post.postId)">Delete</button>
                 <!-- 留言按鈕 -->
-                <button class="btn btn-info btn-sm" @click="addComment(post)">Leave a Comment</button>
+                <button class="btn btn-info btn-sm" @click="addComment(post)">Comment</button>
+
+                <!-- 顯示留言按鈕 -->
+                <button class="btn btn-info btn-sm" @click="toggleComments(post)">Show Comments</button>
             </div>
         </div>
     </div>
