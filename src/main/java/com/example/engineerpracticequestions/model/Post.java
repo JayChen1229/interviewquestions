@@ -67,7 +67,5 @@ public class Post {
 
     @Transient
     private User user;
-
-    // Getters, Setters, and other necessary methods...
 }
 

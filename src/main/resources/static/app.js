@@ -35,7 +35,7 @@ new Vue({
     methods: {
         // 註冊功能
         register() {
-            // Define regular expressions
+            // 設定正則表達式
             const userNameRegex = /^[a-zA-Z0-9_-]{3,16}$/;
             const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
             const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,20}$/;
@@ -120,7 +120,7 @@ new Vue({
                 inputValue: this.biography,
                 showCancelButton: true,
                 confirmButtonText: 'Save',
-                showCloseButton: false, // 不顯示右下角關閉按鈕
+                showCloseButton: false,
             }).then((result) => {
                 if (result.isConfirmed) {
                     this.biography = result.value; // 更新自我介紹
@@ -164,9 +164,7 @@ new Vue({
                                 showConfirmButton: false,
                                 background: 'rgba(255, 255, 255, .7)'
                             });
-                            const postId = response.data.postId; // Assuming the response contains the postId
-
-                            // Upload image after post is created
+                            const postId = response.data.postId;
                             this.uploadImage(postId);
                             this.image = null; // 清空已選擇照片
                             this.fetchPosts();  // 上傳成功 則刷新文章列表
@@ -216,7 +214,7 @@ new Vue({
                         this.fetchPosts();
                     })
                     .catch(error => {
-                        // Handle error
+                        console.log("Error from uploadImage")
                     });
             }
         },
@@ -251,7 +249,6 @@ new Vue({
                         })
                     })
                     .catch(error => {
-                        // Handle error
                         console.log("Error from AvatarImageUploader")
                     });
             });
@@ -361,6 +358,7 @@ new Vue({
                 cancelButtonText: 'Cancel',
             }).then((result) => {
                 if (result.isConfirmed) {
+                    // 避免文字框為null
                     if (result.value) {
                         this.comment.content = result.value;
                         console.log(result.value)
@@ -443,6 +441,7 @@ new Vue({
         }
 
     },
+    // 設定正則表達式
     computed: {
         isValidUserName() {
             const userNameRegex = /^[a-zA-Z0-9_-]{3,16}$/;

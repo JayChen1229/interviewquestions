@@ -49,6 +49,4 @@ public class Comment {
 
     @Transient
     private Post post;
-
-    // Getters, Setters, and other necessary methods...
 }

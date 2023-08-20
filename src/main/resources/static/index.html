@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Simple Social Media</title>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-
     <style>
         .user-profile {
             display: flex;
@@ -114,9 +113,6 @@
             </div>
         </div>
 
-
-
-
         <!-- 文章列表 -->
         <div class="card" v-for="post in posts" :key="post.postId">
             <div class="card-body">
@@ -128,9 +124,13 @@
                      style="width: 300px; height: auto; cursor: pointer;"
                      @click="openImageModal(`/api/v1/posts/${post.postId}/images`)">
                 <p class="card-text">Created At: {{ formatDate(post.createdAt) }}</p>
+
+                <!-- 編輯文章按鈕 -->
                 <button v-if="post.user.userId === user.userId" class="btn btn-primary btn-sm" @click="editPost(post)">
                     Edit
                 </button>
+
+                <!-- 刪除文章按鈕 -->
                 <button v-if="post.user.userId === user.userId" class="btn btn-danger btn-sm"
                         @click="deletePost(post.postId)">Delete
                 </button>
@@ -147,10 +147,13 @@
 <!-- ============================================== sweetAlert ============================================== -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
+<!-- ============================================== vue.js ================================================== -->
 <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+
+<!-- ============================================== axios ================================================== -->
 <script src="https://cdn.jsdelivr.net/npm/axios@0.21.1/dist/axios.min.js"></script>
-<!-- 引入 bcryptjs 模組 -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bcryptjs/2.4.3/bcrypt.min.js"></script>
+
+<!-- ============================================== app.js ================================================== -->
 <script src="app.js"></script>
 
 </body>
