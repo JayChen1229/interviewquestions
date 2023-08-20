@@ -230,7 +230,8 @@ new Vue({
                 cancelButtonText: 'Cancel',
                 inputAttributes: {
                     accept: 'image/*'
-                }
+                },
+                html: '<p style="font-size: 14px; color: gray;">File size must not exceed 10MB.</p>',
             }).then(result => {
                 const formData = new FormData();
                 formData.append('image', result.value);

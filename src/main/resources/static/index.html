@@ -58,14 +58,19 @@
         <!-- 註冊區塊 -->
         <div class="mb-3">
             <h4>Register</h4>
-            <input v-model="userName" placeholder="User Name" class="form-control mb-2" :class="{ 'is-invalid': !isValidUserName }"/>
+            <input v-model="userName" placeholder="User Name" class="form-control mb-2"
+                   :class="{ 'is-invalid': !isValidUserName }"/>
             <div v-if="!isValidUserName" class="invalid-feedback">Invalid user name.</div>
 
-            <input v-model="registerEmail" type="email" placeholder="Email" class="form-control mb-2" :class="{ 'is-invalid': !isValidEmail }"/>
+            <input v-model="registerEmail" type="email" placeholder="Email" class="form-control mb-2"
+                   :class="{ 'is-invalid': !isValidEmail }"/>
             <div v-if="!isValidEmail" class="invalid-feedback">Please enter a valid email address.</div>
 
-            <input v-model="registerPassword" type="password" placeholder="Password" class="form-control mb-2" :class="{ 'is-invalid': !isValidPassword }"/>
-            <div v-if="!isValidPassword" class="invalid-feedback">Password must contain at least one lowercase letter, one uppercase letter, one digit, and be between 6 and 20 characters in length.</div>
+            <input v-model="registerPassword" type="password" placeholder="Password" class="form-control mb-2"
+                   :class="{ 'is-invalid': !isValidPassword }"/>
+            <div v-if="!isValidPassword" class="invalid-feedback">Password must contain at least one lowercase letter,
+                one uppercase letter, one digit, and be between 6 and 20 characters in length.
+            </div>
 
             <button @click="register" class="btn btn-primary mb-2">Register</button>
         </div>
@@ -82,7 +87,7 @@
         <!-- 顯示會員頭像和名稱 -->
         <div class="user-profile">
             <img :src="user.imgUrl" alt="User Avatar" class="user-avatar img-thumbnail"
-                 @click="openImageUploader(user.userId)"  @error="useDefaultImage">
+                 @click="openImageUploader(user.userId)" @error="useDefaultImage">
             <div class="user-info">
                 <p class="user-name">Welcome, {{ user.userName }}</p>
                 <div class="form-group">
@@ -99,12 +104,18 @@
         </button>
 
         <!-- 文章文字框和圖片上傳 -->
-        <div v-if="showTextarea">
-            <textarea class="form-control mb-2" placeholder="Please enter the content of the article"
-                      @input="updateContent"></textarea>
-            <input type="file" @change="handleImageUpload" accept="image/*" class="mb-2"/>
-            <button @click="postPost" class="btn btn-success">publish</button>
+        <div v-if="showTextarea" style="display: flex; flex-direction: column;">
+    <textarea class="form-control mb-2" placeholder="Please enter the content of the article"
+              @input="updateContent"></textarea>
+            <div style="display: flex; align-items: center;">
+                <input type="file" @change="handleImageUpload" accept="image/*" style="margin-right: 10px;">
+                <p style="font-size: 14px; color: gray; margin-right: 10px;">File size must not exceed 10MB.</p>
+                <button @click="postPost" class="btn btn-success">publish</button>
+            </div>
         </div>
+
+
+
 
         <!-- 文章列表 -->
         <div class="card" v-for="post in posts" :key="post.postId">
