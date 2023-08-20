@@ -5,7 +5,8 @@ import com.example.engineerpracticequestions.model.User;
 import com.example.engineerpracticequestions.repository.PostRepository;
 import com.example.engineerpracticequestions.repository.UserRepository;
 import jakarta.transaction.Transactional;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,53 +14,72 @@ import java.util.List;
 @Service
 public class PostService {
 
-    @Autowired
-    private PostRepository postRepository;
+    private final PostRepository postRepository;
+    private final UserRepository userRepository;
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    @Autowired
-    private UserRepository userRepository;
+    public PostService(PostRepository postRepository, UserRepository userRepository) {
+        this.postRepository = postRepository;
+        this.userRepository = userRepository;
+    }
 
     @Transactional
     public List<Post> getAllPosts() {
-        List<Post> posts = postRepository.findAllPosts();
-
-        for(var post:posts){
-            User userByPostId = userRepository.findUserByPostId(post.getPostId());
-            post.setUser(userByPostId);
+        try {
+            List<Post> posts = postRepository.findAllPosts();
+            for (var post : posts) {
+                User userByPostId = userRepository.findUserByPostId(post.getPostId());
+                post.setUser(userByPostId);
+            }
+            return posts;
+        } catch (Exception e) {
+            logger.error("Error fetching all posts", e);
+            throw new RuntimeException("Error fetching all posts", e);
         }
-        return posts;
     }
 
     @Transactional
     public Post getPostById(Long id) {
-        return postRepository.findPostById(id);
+        try {
+            return postRepository.findPostById(id);
+        } catch (Exception e) {
+            logger.error("Error fetching post by id: {}", id, e);
+            throw new RuntimeException("Error fetching post by id: " + id, e);
+        }
     }
-
-
 
     @Transactional
     public Post savePost(Post post) {
-        return postRepository.saveOrUpdatePost(
-                post.getPostId(),
-                post.getUserId(),
-                post.getContent(),
-                post.getImage()
-        );
-    }
-    public void deletePost(Long id) {
-        postRepository.deleteById(id);
-    }
-    @Transactional
-    // 提供img id, 得到Image 的 byte陣列
-    public byte[] findImg(Long id) {
-        Post post = postRepository.findPostById(id);
-        // TripImage::getImage：引用TripImage的getImage()
-        // map (裡面對象如果存在則執行)
-        return post.getImage();
+        try {
+            return postRepository.saveOrUpdatePost(
+                    post.getPostId(),
+                    post.getUserId(),
+                    post.getContent(),
+                    post.getImage()
+            );
+        } catch (Exception e) {
+            logger.error("Error saving post with id: {}", post.getPostId(), e);
+            throw new RuntimeException("Error saving post with id: " + post.getPostId(), e);
+        }
     }
 
-    public void deletePostAndComments(Long id){
-        postRepository.deletePostAndComments(id);
+    @Transactional
+    public byte[] findImg(Long id) {
+        try {
+            Post post = postRepository.findPostById(id);
+            return post.getImage();
+        } catch (Exception e) {
+            logger.error("Error fetching image by post id: {}", id, e);
+            throw new RuntimeException("Error fetching image by post id: " + id, e);
+        }
+    }
+
+    public void deletePostAndComments(Long id) {
+        try {
+            postRepository.deletePostAndComments(id);
+        } catch (Exception e) {
+            logger.error("Error deleting post and its comments by id: {}", id, e);
+            throw new RuntimeException("Error deleting post and its comments by id: " + id, e);
+        }
     }
 }
-

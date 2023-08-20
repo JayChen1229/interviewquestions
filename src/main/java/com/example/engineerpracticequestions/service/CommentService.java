@@ -7,7 +7,8 @@ import com.example.engineerpracticequestions.repository.CommentRepository;
 import com.example.engineerpracticequestions.repository.PostRepository;
 import com.example.engineerpracticequestions.repository.UserRepository;
 import jakarta.transaction.Transactional;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,37 +16,47 @@ import java.util.List;
 @Service
 public class CommentService {
 
-    @Autowired
-    private CommentRepository commentRepository;
+    private final CommentRepository commentRepository;
+    private final PostRepository postRepository;
+    private final UserRepository userRepository;
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    @Autowired
-    private PostRepository postRepository;
-
-    @Autowired
-    private UserRepository userRepository;
+    public CommentService(CommentRepository commentRepository, PostRepository postRepository, UserRepository userRepository) {
+        this.commentRepository = commentRepository;
+        this.postRepository = postRepository;
+        this.userRepository = userRepository;
+    }
 
     @Transactional
     public List<Comment> getCommentsByPost(Long postId) {
-        List<Comment> comments = commentRepository.findCommentByPostId(postId);
-        for(var comment:comments){
-            Post post = postRepository.findPostByCommentId(comment.getCommentId());
-            User user = userRepository.findUserByCommentId(comment.getCommentId());
-            user.setImgUrl("/api/v1/users/"+user.getUserId()+"/images");
-            comment.setPost(post);
-            comment.setUser(user);
+        try {
+            List<Comment> comments = commentRepository.findCommentByPostId(postId);
+            for (var comment : comments) {
+                Post post = postRepository.findPostByCommentId(comment.getCommentId());
+                User user = userRepository.findUserByCommentId(comment.getCommentId());
+                user.setImgUrl("/api/v1/users/" + user.getUserId() + "/images");
+                comment.setPost(post);
+                comment.setUser(user);
+            }
+            return comments;
+        } catch (Exception e) {
+            logger.error("Error fetching comments for post id: {}", postId, e);
+            throw new RuntimeException("Error fetching comments for post id: " + postId, e);
         }
-
-        return comments;
     }
 
     @Transactional
     public Comment saveComment(Comment comment) {
-        return commentRepository.saveOrUpdateComment(
-                comment.getCommentId(),
-                comment.getUserId(),
-                comment.getPostId(),
-                comment.getContent()
-        );
+        try {
+            return commentRepository.saveOrUpdateComment(
+                    comment.getCommentId(),
+                    comment.getUserId(),
+                    comment.getPostId(),
+                    comment.getContent()
+            );
+        } catch (Exception e) {
+            logger.error("Error saving comment with id: {}", comment.getCommentId(), e);
+            throw new RuntimeException("Error saving comment with id: " + comment.getCommentId(), e);
+        }
     }
 }
-

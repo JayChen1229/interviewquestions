@@ -1,20 +1,24 @@
 package com.example.engineerpracticequestions.service;
 
-import com.example.engineerpracticequestions.model.Post;
 import com.example.engineerpracticequestions.model.User;
 import com.example.engineerpracticequestions.repository.UserRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
+
 
 @Service
 public class UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
+    @Autowired
     public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
@@ -22,57 +26,75 @@ public class UserService {
 
     @Transactional
     public User getUserById(Long id) {
-        return userRepository.findUserById(id);
+        try {
+            return userRepository.findUserById(id);
+        } catch (Exception e) {
+            logger.error("Error fetching user by id: {}", id, e);
+            throw new RuntimeException("Error fetching user by id: " + id, e);
+        }
     }
-
 
     public Boolean saveUser(User user) {
-        String email = user.getEmail();
-        // 檢查資料庫中是否已經存在相同的電子郵件地址
-        if (userRepository.existsByEmail(email) != 0) {
-            System.out.println("Email already exists");
-            return false;
+        try {
+            String email = user.getEmail();
+            if (userRepository.existsByEmail(email) != 0) {
+                return false;
+            }
+            String encodedPassword = passwordEncoder.encode(user.getPassword());
+            user.setPassword(encodedPassword);
+            userRepository.saveOrUpdateUser(user.getUserId(), user.getUserName(), user.getEmail(), user.getPassword(), user.getCoverImage(), user.getBiography());
+            return true;
+        } catch (Exception e) {
+            logger.error("Error saving user with email: {}", user.getEmail(), e);
+            throw new RuntimeException("Error saving user with email: " + user.getEmail(), e);
         }
-        // 針對 password 做Bcrypt加密
-        String encodedPassword = passwordEncoder.encode(user.getPassword());
-        user.setPassword(encodedPassword);
-        userRepository.saveOrUpdateUser(user.getUserId(), user.getUserName(), user.getEmail(), user.getPassword(), user.getCoverImage(), user.getBiography());
-        return true;
     }
 
-    // 提供img id, 得到Image 的 byte陣列
     @Transactional
     public byte[] findImg(Long id) {
-        User user = userRepository.findUserById(id);
-        // TripImage::getImage：引用TripImage的getImage()
-        // map (裡面對象如果存在則執行)
-        return user.getCoverImage();
+        try {
+            User user = userRepository.findUserById(id);
+            return user.getCoverImage();
+        } catch (Exception e) {
+            logger.error("Error fetching image by user id: {}", id, e);
+            throw new RuntimeException("Error fetching image by user id: " + id, e);
+        }
     }
 
     @Transactional
     public void updateUserCoverImage(Long userId, byte[] coverImage) {
-        userRepository.updateUserCoverImage(userId, coverImage);
+        try {
+            userRepository.updateUserCoverImage(userId, coverImage);
+        } catch (Exception e) {
+            logger.error("Error updating cover image for user id: {}", userId, e);
+            throw new RuntimeException("Error updating cover image for user id: " + userId, e);
+        }
     }
 
     @Transactional
     public void updateUserBiography(Long userId, String biography) {
-        userRepository.updateUserBiography(userId, biography);
+        try {
+            userRepository.updateUserBiography(userId, biography);
+        } catch (Exception e) {
+            logger.error("Error updating biography for user id: {}", userId, e);
+            throw new RuntimeException("Error updating biography for user id: " + userId, e);
+        }
     }
-
 
     @Transactional
     public User findUser(String email, String password) {
-        // 根據電子郵件地址從資料庫中獲取使用者
-        User user = userRepository.findByEmail(email);
-        if (user == null) {
-            return null; // 使用者不存在，直接返回 null
+        try {
+            User user = userRepository.findByEmail(email);
+            if (user == null) {
+                return null;
+            }
+            if (passwordEncoder.matches(password, user.getPassword())) {
+                return user;
+            }
+            return null;
+        } catch (Exception e) {
+            logger.error("Error finding user by email: {}", email, e);
+            throw new RuntimeException("Error finding user by email: " + email, e);
         }
-        if (passwordEncoder.matches(password, user.getPassword())) {
-            // 密碼匹配，返回使用者
-            return user;
-        }
-        return null; // 密碼不匹配，返回 null
     }
-
 }
-

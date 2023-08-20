@@ -1,6 +1,6 @@
 package com.example.engineerpracticequestions.controller;
 
-import com.example.engineerpracticequestions.model.Post;
+
 import com.example.engineerpracticequestions.model.User;
 import com.example.engineerpracticequestions.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,15 +9,19 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.List;
+
 
 @RestController
 @CrossOrigin
 @RequestMapping("/api/v1/users")
 public class UserController {
 
+    private final UserService userService;
+
     @Autowired
-    private UserService userService;
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
 
     @PostMapping("/{userId}/images")
     public void uploadImage(@PathVariable Long userId, @RequestParam MultipartFile image) {

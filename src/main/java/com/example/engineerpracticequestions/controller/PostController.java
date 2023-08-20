@@ -16,11 +16,14 @@ import java.util.List;
 @RequestMapping("/api/v1/posts")
 public class PostController {
 
-    @Autowired
-    private PostService postService;
+    private final PostService postService;
+    private final CommentService commentService;
 
     @Autowired
-    private CommentService commentService;
+    public PostController(PostService postService, CommentService commentService) {
+        this.postService = postService;
+        this.commentService = commentService;
+    }
 
     @GetMapping
     public List<Post> getAllPosts() {
