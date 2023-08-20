@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.util.HtmlUtils;
 
 import java.io.IOException;
 
@@ -38,17 +39,20 @@ public class UserController {
     }
 
 
-    @PostMapping("/{userId}/biographies")
+    @PutMapping("/{userId}/biographies")
     public void updateBiography(@PathVariable Long userId, @RequestParam String biography) {
+        // 驗證並清理用戶輸入
+        String sanitizedBiography = HtmlUtils.htmlEscape(biography);
+
         User user = userService.getUserById(userId);
         if (user != null) {
-            userService.updateUserBiography(userId, biography);
+            userService.updateUserBiography(userId, sanitizedBiography);
         } else {
             throw new RuntimeException("Error: User is null for user id: " + userId);
         }
     }
 
-    @GetMapping(value = "/{userId}/images", produces = MediaType.IMAGE_GIF_VALUE) // 複數
+    @GetMapping(value = "/{userId}/images", produces = MediaType.IMAGE_GIF_VALUE)
     public byte[] getImage(@PathVariable Long userId) {
         return userService.findImg(userId);
     }

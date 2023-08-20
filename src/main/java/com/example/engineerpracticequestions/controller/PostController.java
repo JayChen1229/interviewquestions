@@ -7,9 +7,12 @@ import com.example.engineerpracticequestions.service.PostService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.util.HtmlUtils;
 
 import java.io.IOException;
 import java.util.List;
@@ -29,26 +32,34 @@ public class PostController {
     }
 
     @GetMapping
-    public List<Post> getAllPosts() {
-        return postService.getAllPosts();
+    public ResponseEntity<List<Post>> getAllPosts() {
+        List<Post> posts = postService.getAllPosts();
+        return ResponseEntity.ok(posts);
     }
     @PostMapping
-    public Post createPost(@RequestBody Post post) {
-        return postService.savePost(post);
+    public ResponseEntity<Post> createPost(@RequestBody Post post) {
+        // 驗證並清理用戶輸入
+        String sanitizedContent = HtmlUtils.htmlEscape(post.getContent());
+        post.setContent(sanitizedContent);
+
+        Post createdPost = postService.savePost(post);
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdPost);
     }
 
     @PostMapping("/{postId}/images")
-    public void uploadImage(@PathVariable Long postId, @RequestParam MultipartFile image) {
+    public ResponseEntity<String> uploadImage(@PathVariable Long postId, @RequestParam MultipartFile image) {
         try {
             Post post = postService.getPostById(postId);
             if (post != null) {
                 post.setImage(image.getBytes());
                 postService.savePost(post);
+                return ResponseEntity.ok("Image uploaded successfully");
             } else {
-                throw new RuntimeException("Error: Post is null for post id: " + postId);
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Error: Post not found for id: " + postId);
             }
         } catch (IOException e) {
             logger.error("Upload failed: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Image upload failed");
         }
     }
     @GetMapping("/{postId}/comments")

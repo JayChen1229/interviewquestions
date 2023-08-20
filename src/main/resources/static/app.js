@@ -124,7 +124,7 @@ new Vue({
             }).then((result) => {
                 if (result.isConfirmed) {
                     this.biography = result.value; // 更新自我介紹
-                    axios.post(`/api/v1/users/${this.user.userId}/biographies`, null, {
+                    axios.put(`/api/v1/users/${this.user.userId}/biographies`, null, {
                         params: {
                             biography: this.biography
                         }
