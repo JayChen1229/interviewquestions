@@ -23,4 +23,7 @@ public interface PostRepository extends JpaRepository<Post, Long> {
             @Param("p_content") String content,
             @Param("p_image") byte[] image
     );
+
+    @Procedure(name = "FindPostByCommentId")
+    Post findPostByCommentId(@Param("p_comment_id") Long commentId);
 }

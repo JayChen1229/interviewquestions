@@ -34,6 +34,14 @@ import java.time.LocalDateTime;
                 },
                 resultClasses = { Post.class }
         ),
+        @NamedStoredProcedureQuery(
+                name = "FindPostByCommentId",
+                procedureName = "FindPostByCommentId",
+                parameters = {
+                        @StoredProcedureParameter(mode = ParameterMode.IN, name = "p_comment_id", type = Long.class)
+                },
+                resultClasses = { Post.class }
+        )
 })
 @Getter
 @Setter

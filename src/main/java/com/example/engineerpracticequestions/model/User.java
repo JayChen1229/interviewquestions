@@ -60,6 +60,14 @@ import lombok.ToString;
                 parameters = {
                         @StoredProcedureParameter(mode = ParameterMode.IN, name = "p_post_id", type = Integer.class)
                 }
+        ),
+        @NamedStoredProcedureQuery(
+                name = "FindUserByCommentId",
+                procedureName = "FindUserByCommentId",
+                parameters = {
+                        @StoredProcedureParameter(mode = ParameterMode.IN, name = "p_comment_id", type = Long.class)
+                },
+                resultClasses = { User.class }
         )
 
 })

@@ -34,4 +34,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     @Procedure(name = "FindUserByPostId")
     User findUserByPostId(@Param("p_post_id") Long postId);
+
+    @Procedure(name = "FindUserByCommentId")
+    User findUserByCommentId(@Param("p_comment_id") Long commentId);
+
 }

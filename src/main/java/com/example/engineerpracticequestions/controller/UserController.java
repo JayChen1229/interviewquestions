@@ -18,7 +18,7 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @PostMapping("/{userId}/upload")
+    @PostMapping("/{userId}/upload") // uploadImage
     public void uploadImage(@PathVariable Long userId, @RequestParam MultipartFile image) {
         User user = userService.getUserById(userId);
         if (user != null) {

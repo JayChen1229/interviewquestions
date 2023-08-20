@@ -1,6 +1,8 @@
 package com.example.engineerpracticequestions.controller;
 
+import com.example.engineerpracticequestions.model.Comment;
 import com.example.engineerpracticequestions.model.Post;
+import com.example.engineerpracticequestions.service.CommentService;
 import com.example.engineerpracticequestions.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -16,6 +18,9 @@ public class PostController {
     @Autowired
     private PostService postService;
 
+    @Autowired
+    private CommentService commentService;
+
     @GetMapping
     public List<Post> getAllPosts() {
         return postService.getAllPosts();
@@ -26,7 +31,7 @@ public class PostController {
         return postService.savePost(post);
     }
 
-    @PostMapping("/{postId}/upload")
+    @PostMapping("/{postId}/uploadImage") // uploadImage
     public void uploadImage(@PathVariable Long postId, @RequestParam MultipartFile image) {
         Post post = postService.getPostById(postId);
         if (post != null) {
@@ -41,6 +46,16 @@ public class PostController {
             System.out.println("上傳失敗");
         }
     }
+
+//    @GetMapping ("/{postId}")
+//    public List<PostVO> getPost(@PathVariable Long postId) {
+//        return commentService.getCommentsByPost(postId);
+//    }
+    @GetMapping("/{postId}/comments")
+    public List<Comment> getCommentByPostId(@PathVariable Long postId) {
+        return commentService.getCommentsByPost(postId);
+    }
+    // PostVO = post + commnet
 
     @DeleteMapping("/{id}")
     public void deletePost(@PathVariable Long id) {

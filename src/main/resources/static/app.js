@@ -17,8 +17,8 @@ new Vue({
         posts: [],
         showTextarea: false, // 是否顯示文章文字框
         comment: {
-            user: '',
-            post: '',
+            userId: '',
+            postId: '',
             content: ''
         },
         comments: [],
@@ -297,8 +297,8 @@ new Vue({
                     if (result.value) {
                         this.comment.content = result.value;
                         console.log(result.value)
-                        this.comment.user = this.user;
-                        this.comment.post = post;
+                        this.comment.userId = this.user.userId;
+                        this.comment.postId = post.postId;
 
                         axios.post('/comments', this.comment)
                             .then(response => {
@@ -335,7 +335,7 @@ new Vue({
         },
         // 切換顯示/隱藏留言列表
         toggleComments(post) {
-            axios.post('/comments/post', post)
+            axios.get(`/posts/${post.postId}/comments`)
                 .then(response => {
                     if (response.data) {
                         this.comments = response.data;

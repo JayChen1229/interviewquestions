@@ -18,7 +18,7 @@ public class UserImageController {
     }
 
     // 用於指定 {imgUrl} 只能由數字組成。 [0-9] 表示匹配一個數字字符，+ 表示匹配前面的表達式一次或多次。
-    @GetMapping(value = "/img/users/{imgUrl:[0-9]+}", produces = MediaType.IMAGE_GIF_VALUE)
+    @GetMapping(value = "/img/users/{imgUrl:[0-9]+}", produces = MediaType.IMAGE_GIF_VALUE) // 複數
     public byte[] getPhoto(@PathVariable("imgUrl") Long id) {
         return userService.findImg(id);
     }

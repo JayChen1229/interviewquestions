@@ -8,6 +8,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+
+// posts/comments/postId
+
 @RestController
 @RequestMapping("/comments")
 public class CommentController {
@@ -15,24 +18,24 @@ public class CommentController {
     @Autowired
     private CommentService commentService;
 
-    @GetMapping
-    public List<Comment> getAllComments() {
-        return commentService.getAllComments();
-    }
+//    @GetMapping
+//    public List<Comment> getAllComments() {
+//        return commentService.getAllComments();
+//    }
 
-    @PostMapping ("/post")
-    public List<Comment> getCommentByPostId(@RequestBody Post post) {
-        return commentService.getCommentsByPost(post);
-    }
+//    @GetMapping ("/post/{postId}")
+//    public List<Comment> getCommentByPostId(@PathVariable Long postId) {
+//        return commentService.getCommentsByPost(postId);
+//    }
 
     @PostMapping
     public Comment createComment(@RequestBody Comment comment) {
         return commentService.saveComment(comment);
     }
 
-    @DeleteMapping("/{id}")
-    public void deleteComment(@PathVariable Long id) {
-        commentService.deleteComment(id);
-    }
+//    @DeleteMapping("/{id}")
+//    public void deleteComment(@PathVariable Long id) {
+//        commentService.deleteComment(id);
+//    }
 }
 
