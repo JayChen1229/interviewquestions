@@ -41,6 +41,13 @@ import java.time.LocalDateTime;
                         @StoredProcedureParameter(mode = ParameterMode.IN, name = "p_comment_id", type = Long.class)
                 },
                 resultClasses = { Post.class }
+        ),
+        @NamedStoredProcedureQuery(
+                name = "DeletePostAndComments",
+                procedureName = "DeletePostAndComments",
+                parameters = {
+                        @StoredProcedureParameter(mode = ParameterMode.IN, name = "p_post_id", type = Long.class)
+                }
         )
 })
 @Getter

@@ -26,4 +26,9 @@ public interface PostRepository extends JpaRepository<Post, Long> {
 
     @Procedure(name = "FindPostByCommentId")
     Post findPostByCommentId(@Param("p_comment_id") Long commentId);
+
+    @Procedure(name = "DeletePostAndComments")
+    void deletePostAndComments(
+            @Param("p_post_id") Long postId
+    );
 }

@@ -57,5 +57,9 @@ public class PostService {
         // map (裡面對象如果存在則執行)
         return post.getImage();
     }
+
+    public void deletePostAndComments(Long id){
+        postRepository.deletePostAndComments(id);
+    }
 }
 

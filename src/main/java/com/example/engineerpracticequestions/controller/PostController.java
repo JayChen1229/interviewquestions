@@ -51,7 +51,7 @@ public class PostController {
     }
     @DeleteMapping("/{postId}")
     public void deletePost(@PathVariable Long postId) {
-        postService.deletePost(postId);
+        postService.deletePostAndComments(postId);
     }
     @GetMapping(value = "/{postId}/images", produces = MediaType.IMAGE_GIF_VALUE)
     public byte[] getImage(@PathVariable Long postId) {
