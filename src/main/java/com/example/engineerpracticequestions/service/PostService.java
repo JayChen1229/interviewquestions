@@ -21,7 +21,7 @@ public class PostService {
 
     @Transactional
     public List<Post> getAllPosts() {
-        List<Post> posts = postRepository.findAll();
+        List<Post> posts = postRepository.findAllPosts();
 
         for(var post:posts){
             User userByPostId = userRepository.findUserByPostId(post.getPostId());
@@ -30,20 +30,29 @@ public class PostService {
         return posts;
     }
 
+    @Transactional
     public Post getPostById(Long id) {
-        return postRepository.findById(id).orElse(null);
+        return postRepository.findPostById(id);
     }
 
+
+
+    @Transactional
     public Post savePost(Post post) {
-        return postRepository.save(post);
+        return postRepository.saveOrUpdatePost(
+                post.getPostId(),
+                post.getUserId(),
+                post.getContent(),
+                post.getImage()
+        );
     }
     public void deletePost(Long id) {
         postRepository.deleteById(id);
     }
-
+    @Transactional
     // 提供img id, 得到Image 的 byte陣列
     public byte[] findImg(Long id) {
-        Post post = postRepository.findById(id).orElse(null);
+        Post post = postRepository.findPostById(id);
         // TripImage::getImage：引用TripImage的getImage()
         // map (裡面對象如果存在則執行)
         return post.getImage();

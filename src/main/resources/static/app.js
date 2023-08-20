@@ -8,6 +8,7 @@ new Vue({
         newPost: {            // 新文章的內容
             content: '',
             user: '',
+            userId:''
         },
         image: '',
         coverImage: '',
@@ -86,8 +87,9 @@ new Vue({
             this.user = null;
         },
         postPost() {
-            if (this.newPost.content) {
+            if (this.newPost.content && this.user.userId) {
                 this.newPost.user = this.user;
+                this.newPost.userId = this.user.userId;
                 axios.post('/posts', this.newPost)
                     .then(response => {
                         if (response) {

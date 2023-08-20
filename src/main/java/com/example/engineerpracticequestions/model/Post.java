@@ -9,10 +9,35 @@ import org.hibernate.annotations.DynamicInsert;
 import java.time.LocalDateTime;
 
 @Entity
+@NamedStoredProcedureQueries({
+        @NamedStoredProcedureQuery(
+                name = "GetAllPosts",
+                procedureName = "GetAllPosts",
+                resultClasses = { Post.class }
+        ),
+        @NamedStoredProcedureQuery(
+                name = "FindPostById",
+                procedureName = "FindPostById",
+                parameters = {
+                        @StoredProcedureParameter(mode = ParameterMode.IN, name = "p_post_id", type = Long.class)
+                },
+                resultClasses = { Post.class }
+        ),
+        @NamedStoredProcedureQuery(
+                name = "SaveOrUpdatePost",
+                procedureName = "SaveOrUpdatePost",
+                parameters = {
+                        @StoredProcedureParameter(mode = ParameterMode.INOUT, name = "p_post_id", type = Long.class),
+                        @StoredProcedureParameter(mode = ParameterMode.IN, name = "p_user_id", type = Long.class),
+                        @StoredProcedureParameter(mode = ParameterMode.IN, name = "p_content", type = String.class),
+                        @StoredProcedureParameter(mode = ParameterMode.IN, name = "p_image", type = byte[].class)
+                },
+                resultClasses = { Post.class }
+        ),
+})
 @Getter
 @Setter
 @ToString
-@DynamicInsert  //這個注解可以讓 Hibernate 在插入新記錄時只生成非空欄位的 SQL 語句，從而避免將 NULL 值插入 application_time 欄位。
 public class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
