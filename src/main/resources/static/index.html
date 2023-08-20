@@ -40,9 +40,9 @@
         <!-- 註冊區塊 -->
         <div class="mb-3">
             <h4>Register</h4>
-            <input v-model="userName" placeholder="User Name" class="form-control mb-2"/>
-            <input v-model="registerEmail" type="email" placeholder="Email" class="form-control mb-2"/>
-            <input v-model="registerPassword" type="password" placeholder="Password" class="form-control mb-2"/>
+            <input v-model="userName" placeholder="User Name" class="form-control mb-2" :class="{ 'is-invalid': !userName }"/>
+            <input v-model="registerEmail" type="email" placeholder="Email" class="form-control mb-2" :class="{ 'is-invalid': !registerEmail }"/>
+            <input v-model="registerPassword" type="password" placeholder="Password" class="form-control mb-2" :class="{ 'is-invalid': !registerPassword }"/>
             <button @click="register" class="btn btn-primary mb-2">Register</button>
         </div>
 
