@@ -327,14 +327,6 @@ new Vue({
                 }
             });
         },
-        showUserDetails(user) {
-            Swal.fire({
-                title: `${user.userName} Details`,
-                html: `User ID: ${user.userId}<br>Biography: ${user.biography}`,
-                showCancelButton: false,
-                showConfirmButton: true
-            });
-        },
         // 添加留言
         addComment(post) {
             Swal.fire({
@@ -403,8 +395,7 @@ new Vue({
             ${this.comments.map(comment => `
                 <tr>
                     <td>
-                        <img src="${comment.user.imgUrl}" alt="User Avatar" class="user-avatar img-thumbnail"
-                             @click="this.showUserDetails(comment.user)">
+                        <img src="${comment.user.imgUrl}" alt="User Avatar" class="user-avatar img-thumbnail">
                         ${comment.user.userName}
                     </td>
                     <td>${comment.content}</td>
