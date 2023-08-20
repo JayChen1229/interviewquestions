@@ -16,7 +16,7 @@ import lombok.ToString;
                 }
         ),
         @NamedStoredProcedureQuery(
-                name = "saveOrUpdateUser",
+                name = "SaveOrUpdateUser",
                 procedureName = "SaveOrUpdateUser",
                 parameters = {
                         @StoredProcedureParameter(mode = ParameterMode.IN, name = "p_user_id", type = Integer.class),
@@ -45,7 +45,7 @@ import lombok.ToString;
                 }
         ),
         @NamedStoredProcedureQuery(
-                name = "emailExists",
+                name = "EmailExists",
                 procedureName = "EmailExists",
                 parameters = {
                         @StoredProcedureParameter(mode = ParameterMode.IN, name = "p_email", type = String.class),

@@ -10,10 +10,10 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
-    @Procedure(name = "emailExists")
+    @Procedure(name = "EmailExists")
     Integer  existsByEmail(@Param("p_email") String email);
 
-    @Procedure(name = "saveOrUpdateUser")
+    @Procedure(name = "SaveOrUpdateUser")
     void saveOrUpdateUser(
             @Param("p_user_id") Long userId,
             @Param("p_user_name") String userName,
