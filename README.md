@@ -9,6 +9,9 @@ spring data jpa , spring web, MySQL Driver, lombok, spring-security-crypto
 採用cdn引入Vue.js , 靜態網站放置於 resources/static 資料夾內
 採用一頁式網頁設計
 
+詳細圖文教學與介紹
+https://glamorous-spell-72b.notion.site/Java-2beb0b78501b4b3b8aeaed681fa213c1?pvs=4
+
 專案建置流程
 1. 下載專案使用JDK開啟 Java 版本號為17
 2. 設定application.properties
@@ -42,10 +45,10 @@ spring data jpa , spring web, MySQL Driver, lombok, spring-security-crypto
 2. 使用 Spring Boot 搭建相關應用程式。 
 3. 使用 RESTful API 風格建立後端服務。 
 4. 使用 Maven 或 Gradle 做為專案建立的工具。 
-5. 透過 Stored Procedure 存取資料庫。 
-6. 需同時異動多個資料表時，請實作 Transaction，避免資料錯亂。 
-7. 資料庫的 DDL 和 DML 請存放在專案下的\DB 資料夾內提供 
-8. 需防止 SQL Injection 以及 XSS 攻擊。
+5. 使用 Stored Procedure 存取資料庫。 
+6. 實作 Transaction，避免資料錯亂。 
+7. 資料庫的 DDL 和 DML 存放在專案下的\DB 資料夾內
+8. 防止 SQL Injection 以及 XSS 攻擊。
 
 
 

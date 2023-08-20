@@ -34,6 +34,7 @@ public class UserService {
         }
     }
 
+    @Transactional
     public Boolean saveUser(User user) {
         try {
             String email = user.getEmail();
