@@ -9,9 +9,19 @@ spring data jpa , spring web, MySQL Driver, lombok, spring-security-crypto
 採用cdn引入Vue.js , 靜態網站放置於 resources/static 資料夾內
 採用一頁式網頁設計
 
+專案建置流程
+1. 下載專案使用JDK開啟 Java 版本號為17
+2. 設定application.properties
+   spring.datasource.username=輸入自己的資料庫名稱
+   spring.datasource.password=輸入自己的資料庫密碼
+3. 開啟MySQL 建置所需要資料庫
+   SQL指令 DDL 放置於 src/main/resources/DB  用於建置SCHEMA 與 Table
+   SQL指令 DML 放置於 src/main/resources/DB  內涵Stored Procedure指令
+4. 相關設定設定完成即可運行
+
 完成功能：
-1. 登入系統
-2. 註冊系統 (使用 bCrypt 單向加密，判斷Email 是否重複註冊，各項欄位不得為空值)
+1. 登入系統 
+2. 註冊系統 (使用 bCrypt 單向加密，判斷Email 是否重複註冊，各項欄位不得為空值，使用正則表達式)
 3. 登入驗證：登入成功才能進入文章列表 (使用前端Vue.js 判斷 是否為User)
 4. 發表文章系統(可以新增圖片，點擊文章圖片可以放大)
 5. 顯示所有文章系統(圖片採用url傳輸)
@@ -21,6 +31,10 @@ spring data jpa , spring web, MySQL Driver, lombok, spring-security-crypto
 9. 留言顯示系統：點擊留言顯示按鈕，可以顯示所有使用者的留言，包含使用者資訊 
 10. 會員系統(可以新增自我介紹，可以新增與更改頭像照片)
 11. 登出系統（回到登入頁面）
+12. 針對使用者輸入做驗證，防止XSS攻擊
+13. 使用log 紀錄錯誤訊息
+14. 添加例外處理
+15. Stored Procedure 設計 防止 SQL Injection
 
 
 滿足需求：
