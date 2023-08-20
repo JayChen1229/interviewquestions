@@ -1,5 +1,4 @@
 # interviewquestions
-玉山面試題
 
 後端使用Spring boot 3 建置 用到的依賴項有
 
@@ -14,7 +13,7 @@ spring data jpa , spring web, MySQL Driver, lombok, spring-security-crypto
 1. 登入系統
 2. 註冊系統 (使用 bCrypt 單向加密，判斷Email 是否重複註冊，各項欄位不得為空值)
 3. 登入驗證：登入成功才能進入文章列表 (使用前端Vue.js 判斷 是否為User)
-4. 發表文章系統(可以新增圖片)
+4. 發表文章系統(可以新增圖片，點擊文章圖片可以放大)
 5. 顯示所有文章系統(圖片採用url傳輸)
 6. 修改文章系統(只有自己寫的文章，才會顯示修改按鈕)
 7. 刪除文章系統(只有自己寫的文章，才會顯示刪除按鈕)
