@@ -25,30 +25,28 @@ public class UserController {
 
     @PostMapping("/{userId}/images")
     public void uploadImage(@PathVariable Long userId, @RequestParam MultipartFile image) {
-        User user = userService.getUserById(userId);
-        if (user != null) {
-            try {
+        try {
+            User user = userService.getUserById(userId);
+            if (user != null) {
                 userService.updateUserCoverImage(userId, image.getBytes());
-                System.out.println("上傳成功");
-            } catch (IOException e) {
-                System.out.println("上傳失敗");
+            } else {
+                throw new RuntimeException("Error: User is null for user id: " + userId);
             }
-        } else {
-            System.out.println("上傳失敗");
+        } catch (IOException e) {
+            throw new RuntimeException("Error uploading image for user id: " + userId, e);
         }
     }
+
 
     @PostMapping("/{userId}/biographies")
     public void updateBiography(@PathVariable Long userId, @RequestParam String biography) {
         User user = userService.getUserById(userId);
         if (user != null) {
-            userService.updateUserBiography(userId,biography);
-        }else {
-            System.out.println("出問題了");
+            userService.updateUserBiography(userId, biography);
+        } else {
+            throw new RuntimeException("Error: User is null for user id: " + userId);
         }
     }
-
-
 
     @GetMapping(value = "/{userId}/images", produces = MediaType.IMAGE_GIF_VALUE) // 複數
     public byte[] getImage(@PathVariable Long userId) {

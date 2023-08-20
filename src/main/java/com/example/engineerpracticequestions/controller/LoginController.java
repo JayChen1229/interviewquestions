@@ -26,7 +26,6 @@ public class LoginController {
         if(theUser != null){
             return theUser;
         }
-        System.out.println("登入失敗");
         return null;
     }
 

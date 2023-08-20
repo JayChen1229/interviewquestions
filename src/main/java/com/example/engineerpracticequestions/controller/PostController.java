@@ -4,6 +4,8 @@ import com.example.engineerpracticequestions.model.Comment;
 import com.example.engineerpracticequestions.model.Post;
 import com.example.engineerpracticequestions.service.CommentService;
 import com.example.engineerpracticequestions.service.PostService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +20,7 @@ public class PostController {
 
     private final PostService postService;
     private final CommentService commentService;
+    private final Logger logger = LoggerFactory.getLogger(getClass());
 
     @Autowired
     public PostController(PostService postService, CommentService commentService) {
@@ -33,19 +36,19 @@ public class PostController {
     public Post createPost(@RequestBody Post post) {
         return postService.savePost(post);
     }
+
     @PostMapping("/{postId}/images")
     public void uploadImage(@PathVariable Long postId, @RequestParam MultipartFile image) {
-        Post post = postService.getPostById(postId);
-        if (post != null) {
-            try {
+        try {
+            Post post = postService.getPostById(postId);
+            if (post != null) {
                 post.setImage(image.getBytes());
                 postService.savePost(post);
-                System.out.println("上傳成功");
-            } catch (IOException e) {
-                System.out.println("上傳失敗");
+            } else {
+                throw new RuntimeException("Error: Post is null for post id: " + postId);
             }
-        } else {
-            System.out.println("上傳失敗");
+        } catch (IOException e) {
+            logger.error("Upload failed: " + e.getMessage());
         }
     }
     @GetMapping("/{postId}/comments")

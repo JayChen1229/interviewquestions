@@ -6,7 +6,6 @@ import lombok.Setter;
 import lombok.ToString;
 
 @Entity
-@Table(name = "user")
 @NamedStoredProcedureQueries({
         @NamedStoredProcedureQuery(
                 name = "FindUserById",
@@ -79,6 +78,7 @@ import lombok.ToString;
         )
 
 })
+@Table(name = "user")
 @Getter
 @Setter
 @ToString

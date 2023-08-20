@@ -34,7 +34,6 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @ToString
-@DynamicInsert  //這個注解可以讓 Hibernate 在插入新記錄時只生成非空欄位的 SQL 語句，從而避免將 NULL 值插入 application_time 欄位。
 public class Comment {
 
     @Id

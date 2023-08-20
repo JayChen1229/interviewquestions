@@ -58,9 +58,15 @@
         <!-- 註冊區塊 -->
         <div class="mb-3">
             <h4>Register</h4>
-            <input v-model="userName" placeholder="User Name" class="form-control mb-2" :class="{ 'is-invalid': !userName }"/>
-            <input v-model="registerEmail" type="email" placeholder="Email" class="form-control mb-2" :class="{ 'is-invalid': !registerEmail }"/>
-            <input v-model="registerPassword" type="password" placeholder="Password" class="form-control mb-2" :class="{ 'is-invalid': !registerPassword }"/>
+            <input v-model="userName" placeholder="User Name" class="form-control mb-2" :class="{ 'is-invalid': !isValidUserName }"/>
+            <div v-if="!isValidUserName" class="invalid-feedback">Invalid user name.</div>
+
+            <input v-model="registerEmail" type="email" placeholder="Email" class="form-control mb-2" :class="{ 'is-invalid': !isValidEmail }"/>
+            <div v-if="!isValidEmail" class="invalid-feedback">Please enter a valid email address.</div>
+
+            <input v-model="registerPassword" type="password" placeholder="Password" class="form-control mb-2" :class="{ 'is-invalid': !isValidPassword }"/>
+            <div v-if="!isValidPassword" class="invalid-feedback">Password must contain at least one lowercase letter, one uppercase letter, one digit, and be between 6 and 20 characters in length.</div>
+
             <button @click="register" class="btn btn-primary mb-2">Register</button>
         </div>
 

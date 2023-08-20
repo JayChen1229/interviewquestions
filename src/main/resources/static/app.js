@@ -2,38 +2,50 @@ new Vue({
     el: '#app',
     data: {
         userName: '',
+        password: '',
         email: '',
+        biography: '',
+
         registerEmail: '',
-        user: null,
-        newPost: {            // 新文章的內容
+        registerPassword: '',
+
+        newPost: {
             content: '',
             user: '',
-            userId:''
+            userId: ''
         },
-        image: '',
-        coverImage: '',
-        password: '',
-        registerPassword: '',
-        posts: [],
-        showTextarea: false, // 是否顯示文章文字框
         comment: {
             userId: '',
             postId: '',
             content: '',
-            createdAt:''
+            createdAt: ''
         },
+
+        image: '',
+        coverImage: '',
+
+        posts: [],
         comments: [],
+
+        user: null,
+        showTextarea: false,
         showComments: false,
-        biography:'',
+
     },
     methods: {
+        // 註冊功能
         register() {
-            if (this.userName && this.registerEmail && this.registerPassword) {
+            // Define regular expressions
+            const userNameRegex = /^[a-zA-Z0-9_-]{3,16}$/;
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,20}$/;
+
+            if (userNameRegex.test(this.userName) && emailRegex.test(this.registerEmail) && passwordRegex.test(this.registerPassword)) {
                 let user = {
                     userName: this.userName,
                     email: this.registerEmail,
                     password: this.registerPassword,
-                }
+                };
                 axios.post('/register', user)
                     .then(response => {
                         if (response.data) {
@@ -53,11 +65,19 @@ new Vue({
                                 background: 'rgba(255, 255, 255, .7)'
                             });
                         }
-
-
                     });
+            } else {
+                Swal.fire({
+                    position: 'top',
+                    title: 'Invalid input',
+                    timer: 1500,
+                    showConfirmButton: false,
+                    background: 'rgba(255, 255, 255, .7)'
+                });
             }
         },
+
+        // 登入功能
         login() {
             if (this.email && this.password) {
                 axios.post('/login', null, {
@@ -81,17 +101,18 @@ new Vue({
                                 background: 'rgba(255, 255, 255, .7)'
                             });
                         }
-
                     });
             }
         },
+        // 登出功能
         logout() {
-            // 登出，移除user資料
             this.user = null;
         },
+        // 預設頭像
         useDefaultImage(event) {
             event.target.src = "defaultAvatar.png";
         },
+        // 修改自介
         editBiography() {
             Swal.fire({
                 title: 'Edit Biography',
@@ -125,10 +146,10 @@ new Vue({
                                 })
                             }
                         });
-
                 }
             });
         },
+        // 發布文章
         postPost() {
             if (this.newPost.content && this.user.userId) {
                 this.newPost.user = this.user;
@@ -158,7 +179,6 @@ new Vue({
                                 background: 'rgba(255, 255, 255, .7)'
                             });
                         }
-
                     });
             } else {
                 Swal.fire({
@@ -172,16 +192,15 @@ new Vue({
             this.newPost.content = '';
             this.showTextarea = false;
         },
-
         // 文字更新事件
         updateContent(event) {
             this.newPost.content = event.target.value;
         },
+        // 處理圖片上傳的事件
         handleImageUpload(event) {
-            // 處理圖片上傳的事件
             this.image = event.target.files[0];
         },
-
+        // 上傳文章圖片
         uploadImage(postId) {
             // 如果圖片存在
             if (this.image) {
@@ -201,6 +220,7 @@ new Vue({
                     });
             }
         },
+        // 上傳會員圖片
         openImageUploader(userId) {
             Swal.fire({
                 title: 'Upload Avatar',
@@ -235,6 +255,7 @@ new Vue({
                     });
             });
         },
+        // 刪除文章
         deletePost(postId) {
             axios.delete(`/api/v1/posts/${postId}`)
                 .then(response => {
@@ -258,39 +279,14 @@ new Vue({
                     }
                 });
         },
+        // 獲取所有文章
         fetchPosts() {
             axios.get('/api/v1/posts')
                 .then(response => {
                     this.posts = response.data;
                 });
         },
-
-        openImageModal(imageUrl) {
-            // 使用 SweetAlert 來彈出大圖
-            Swal.fire({
-                imageUrl: imageUrl,
-                imageAlt: 'Post Image',
-                showConfirmButton: false,
-                customClass: {
-                    image: 'img-fluid'
-                },
-                width: '80%', // 設定寬度為螢幕的 80%
-            });
-        },
-
-        formatDate(date) {
-            const options = {
-                year: 'numeric',
-                month: 'short',
-                day: 'numeric',
-                hour: 'numeric',
-                minute: 'numeric',
-                second: 'numeric'
-            };
-            const formatter = new Intl.DateTimeFormat(undefined, options);
-            const formattedDate = formatter.format(new Date(date));
-            return formattedDate;
-        },
+        // 修改文章
         editPost(post) {
             Swal.fire({
                 title: 'Edit Content',
@@ -326,6 +322,33 @@ new Vue({
                         });
                 }
             });
+        },
+        // 放大文章圖片
+        openImageModal(imageUrl) {
+            // 使用 SweetAlert 來彈出大圖
+            Swal.fire({
+                imageUrl: imageUrl,
+                imageAlt: 'Post Image',
+                showConfirmButton: false,
+                customClass: {
+                    image: 'img-fluid'
+                },
+                width: '80%',
+            });
+        },
+        // 設定時間格式
+        formatDate(date) {
+            const options = {
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric',
+                hour: 'numeric',
+                minute: 'numeric',
+                second: 'numeric'
+            };
+            const formatter = new Intl.DateTimeFormat(undefined, options);
+            const formattedDate = formatter.format(new Date(date));
+            return formattedDate;
         },
         // 添加留言
         addComment(post) {
@@ -365,7 +388,7 @@ new Vue({
                                 }
 
                             });
-                    }else {
+                    } else {
                         Swal.fire({
                             icon: 'warning',
                             title: 'Comment cannot be empty',
@@ -408,7 +431,7 @@ new Vue({
                         Swal.fire({
                             title: 'Comments',
                             html: commentTable,
-                            width: '80%', // 在這裡設定彈窗的寬度
+                            width: '80%',
                             showCancelButton: false,
                             showConfirmButton: true
                         });
@@ -419,9 +442,22 @@ new Vue({
         }
 
     },
-
+    computed: {
+        isValidUserName() {
+            const userNameRegex = /^[a-zA-Z0-9_-]{3,16}$/;
+            return this.userName && userNameRegex.test(this.userName);
+        },
+        isValidEmail() {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return this.registerEmail && emailRegex.test(this.registerEmail);
+        },
+        isValidPassword() {
+            const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,20}$/;
+            return this.registerPassword && passwordRegex.test(this.registerPassword);
+        }
+    },
+    // 在 Vue 實例創建時獲取文章列表
     created() {
-        // 在 Vue 實例創建時獲取文章列表
         this.fetchPosts();
     }
 });
