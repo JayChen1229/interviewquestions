@@ -19,7 +19,8 @@ new Vue({
         comment: {
             userId: '',
             postId: '',
-            content: ''
+            content: '',
+            createdAt:''
         },
         comments: [],
         showComments: false,
@@ -323,6 +324,14 @@ new Vue({
                 }
             });
         },
+        showUserDetails(user) {
+            Swal.fire({
+                title: `${user.userName} Details`,
+                html: `User ID: ${user.userId}<br>Biography: ${user.biography}`,
+                showCancelButton: false,
+                showConfirmButton: true
+            });
+        },
         // 添加留言
         addComment(post) {
             Swal.fire({
@@ -378,11 +387,34 @@ new Vue({
                 .then(response => {
                     if (response.data) {
                         this.comments = response.data;
-                        const commentList = this.comments.map(comment => `${comment.user.userName}: ${comment.content}`).join('<br>');
-
+                        const commentTable = `
+    <table class="table">
+        <thead>
+            <tr>
+                <th>User</th>
+                <th>Comment</th>
+                <th>Time</th>
+            </tr>
+        </thead>
+        <tbody>
+            ${this.comments.map(comment => `
+                <tr>
+                    <td>
+                        <img src="${comment.user.imgUrl}" alt="User Avatar" class="user-avatar img-thumbnail"
+                             @click="this.showUserDetails(comment.user)">
+                        ${comment.user.userName}
+                    </td>
+                    <td>${comment.content}</td>
+                    <td>${this.formatDate(comment.createdAt)}</td>
+                </tr>
+            `).join('')}
+        </tbody>
+    </table>
+`;
                         Swal.fire({
                             title: 'Comments',
-                            html: commentList,
+                            html: commentTable,
+                            width: '80%', // 在這裡設定彈窗的寬度
                             showCancelButton: false,
                             showConfirmButton: true
                         });
@@ -391,7 +423,9 @@ new Vue({
                     }
                 });
         }
+
     },
+
     created() {
         // 在 Vue 實例創建時獲取文章列表
         this.fetchPosts();
