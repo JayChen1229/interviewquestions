@@ -38,4 +38,12 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Procedure(name = "FindUserByCommentId")
     User findUserByCommentId(@Param("p_comment_id") Long commentId);
 
+    @Procedure(name = "UpdateUserBiography")
+    void updateUserBiography(
+            @Param("p_user_id") Long userId,
+            @Param("p_biography") String biography
+    );
+
+
+
 }

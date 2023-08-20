@@ -34,6 +34,18 @@ public class UserController {
         }
     }
 
+    @PostMapping("/{userId}/biographies")
+    public void updateBiography(@PathVariable Long userId, @RequestParam String biography) {
+        User user = userService.getUserById(userId);
+        if (user != null) {
+            userService.updateUserBiography(userId,biography);
+        }else {
+            System.out.println("出問題了");
+        }
+    }
+
+
+
     @GetMapping(value = "/{userId}/images", produces = MediaType.IMAGE_GIF_VALUE) // 複數
     public byte[] getImage(@PathVariable Long userId) {
         return userService.findImg(userId);

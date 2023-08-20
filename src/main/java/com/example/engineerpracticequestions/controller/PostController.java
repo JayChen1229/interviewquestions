@@ -26,12 +26,10 @@ public class PostController {
     public List<Post> getAllPosts() {
         return postService.getAllPosts();
     }
-
     @PostMapping
     public Post createPost(@RequestBody Post post) {
         return postService.savePost(post);
     }
-
     @PostMapping("/{postId}/images")
     public void uploadImage(@PathVariable Long postId, @RequestParam MultipartFile image) {
         Post post = postService.getPostById(postId);
@@ -47,19 +45,14 @@ public class PostController {
             System.out.println("上傳失敗");
         }
     }
-
     @GetMapping("/{postId}/comments")
     public List<Comment> getCommentByPostId(@PathVariable Long postId) {
         return commentService.getCommentsByPost(postId);
     }
-    // PostVO = post + commnet
-
     @DeleteMapping("/{postId}")
     public void deletePost(@PathVariable Long postId) {
         postService.deletePost(postId);
     }
-
-    // 用於指定 {imgUrl} 只能由數字組成。 [0-9] 表示匹配一個數字字符，+ 表示匹配前面的表達式一次或多次。
     @GetMapping(value = "/{postId}/images", produces = MediaType.IMAGE_GIF_VALUE)
     public byte[] getImage(@PathVariable Long postId) {
         return postService.findImg(postId);

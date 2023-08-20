@@ -29,14 +29,14 @@ public class UserService {
     public Boolean saveUser(User user) {
         String email = user.getEmail();
         // 檢查資料庫中是否已經存在相同的電子郵件地址
-        if (userRepository.existsByEmail(email)!=0) {
+        if (userRepository.existsByEmail(email) != 0) {
             System.out.println("Email already exists");
             return false;
         }
         // 針對 password 做Bcrypt加密
         String encodedPassword = passwordEncoder.encode(user.getPassword());
         user.setPassword(encodedPassword);
-        userRepository.saveOrUpdateUser(user.getUserId(),user.getUserName(),user.getEmail(),user.getPassword(),user.getCoverImage(),user.getBiography());
+        userRepository.saveOrUpdateUser(user.getUserId(), user.getUserName(), user.getEmail(), user.getPassword(), user.getCoverImage(), user.getBiography());
         return true;
     }
 
@@ -53,6 +53,12 @@ public class UserService {
     public void updateUserCoverImage(Long userId, byte[] coverImage) {
         userRepository.updateUserCoverImage(userId, coverImage);
     }
+
+    @Transactional
+    public void updateUserBiography(Long userId, String biography) {
+        userRepository.updateUserBiography(userId, biography);
+    }
+
 
     @Transactional
     public User findUser(String email, String password) {

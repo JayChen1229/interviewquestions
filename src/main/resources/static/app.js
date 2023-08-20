@@ -23,6 +23,7 @@ new Vue({
         },
         comments: [],
         showComments: false,
+        biography:'',
     },
     methods: {
         register() {
@@ -69,6 +70,7 @@ new Vue({
                             // 登入成功，放入user資料
                             this.user = response.data;
                             this.user.imgUrl = `/api/v1/users/${this.user.userId}/images`;
+                            this.biography = this.user.biography;
                         } else {
                             Swal.fire({
                                 position: 'top',
@@ -85,6 +87,43 @@ new Vue({
         logout() {
             // 登出，移除user資料
             this.user = null;
+        },
+        editBiography() {
+            Swal.fire({
+                title: 'Edit Biography',
+                input: 'textarea',
+                inputValue: this.biography,
+                showCancelButton: true,
+                confirmButtonText: 'Save',
+                showCloseButton: false, // 不顯示右下角關閉按鈕
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    this.biography = result.value; // 更新自我介紹
+                    axios.post(`/api/v1/users/${this.user.userId}/biographies`, null, {
+                        params: {
+                            biography: this.biography
+                        }
+                    })
+                        .then(response => {
+                            if (response) {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Biography Update Success',
+                                    showConfirmButton: false,
+                                    timer: 1500
+                                })
+                            } else {
+                                Swal.fire({
+                                    icon: 'warning',
+                                    title: 'Biography Update failed',
+                                    showConfirmButton: false,
+                                    timer: 1500
+                                })
+                            }
+                        });
+
+                }
+            });
         },
         postPost() {
             if (this.newPost.content && this.user.userId) {

@@ -68,6 +68,14 @@ import lombok.ToString;
                         @StoredProcedureParameter(mode = ParameterMode.IN, name = "p_comment_id", type = Long.class)
                 },
                 resultClasses = { User.class }
+        ),
+        @NamedStoredProcedureQuery(
+                name = "UpdateUserBiography",
+                procedureName = "UpdateUserBiography",
+                parameters = {
+                        @StoredProcedureParameter(mode = ParameterMode.IN, name = "p_user_id", type = Long.class),
+                        @StoredProcedureParameter(mode = ParameterMode.IN, name = "p_biography", type = String.class)
+                }
         )
 
 })
