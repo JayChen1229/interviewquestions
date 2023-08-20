@@ -76,7 +76,7 @@
         <!-- 顯示會員頭像和名稱 -->
         <div class="user-profile">
             <img :src="user.imgUrl" alt="User Avatar" class="user-avatar img-thumbnail"
-                 @click="openImageUploader(user.userId)">
+                 @click="openImageUploader(user.userId)"  @error="useDefaultImage">
             <div class="user-info">
                 <p class="user-name">Welcome, {{ user.userName }}</p>
                 <div class="form-group">

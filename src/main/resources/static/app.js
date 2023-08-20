@@ -89,6 +89,9 @@ new Vue({
             // 登出，移除user資料
             this.user = null;
         },
+        useDefaultImage(event) {
+            event.target.src = "defaultAvatar.png";
+        },
         editBiography() {
             Swal.fire({
                 title: 'Edit Biography',
