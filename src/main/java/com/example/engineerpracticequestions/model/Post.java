@@ -17,17 +17,16 @@ public class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long postId;
-
-    @ManyToOne
-    @JoinColumn(name="user_id")
-    private User user;
-
+    private Long userId;
     private String content;
     private byte[] image;
     private LocalDateTime createdAt;
 
     @Transient
     private Comment comment;
+
+    @Transient
+    private User user;
 
     // Getters, Setters, and other necessary methods...
 }

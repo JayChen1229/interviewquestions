@@ -1,7 +1,10 @@
 package com.example.engineerpracticequestions.service;
 
 import com.example.engineerpracticequestions.model.Post;
+import com.example.engineerpracticequestions.model.User;
 import com.example.engineerpracticequestions.repository.PostRepository;
+import com.example.engineerpracticequestions.repository.UserRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,8 +16,18 @@ public class PostService {
     @Autowired
     private PostRepository postRepository;
 
+    @Autowired
+    private UserRepository userRepository;
+
+    @Transactional
     public List<Post> getAllPosts() {
-        return postRepository.findAll();
+        List<Post> posts = postRepository.findAll();
+
+        for(var post:posts){
+            User userByPostId = userRepository.findUserByPostId(post.getPostId());
+            post.setUser(userByPostId);
+        }
+        return posts;
     }
 
     public Post getPostById(Long id) {

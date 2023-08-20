@@ -43,7 +43,6 @@ new Vue({
                             });
                         } else {
                             Swal.fire({
-
                                 position: 'top',
                                 title: 'This mailbox is already registered',
                                 timer: 1500,
@@ -187,6 +186,7 @@ new Vue({
                     })
                     .catch(error => {
                         // Handle error
+                        console.log("Error from AvatarImageUploader")
                     });
             });
         },
