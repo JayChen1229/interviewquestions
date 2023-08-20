@@ -34,7 +34,13 @@ public class CommentService {
             for (var comment : comments) {
                 Post post = postRepository.findPostByCommentId(comment.getCommentId());
                 User user = userRepository.findUserByCommentId(comment.getCommentId());
-                user.setImgUrl("/api/v1/users/" + user.getUserId() + "/images");
+
+                if(user.getCoverImage()!= null){
+                    user.setImgUrl("/api/v1/users/" + user.getUserId() + "/images");
+                }else {
+                    user.setImgUrl("defaultAvatar.png");
+                }
+
                 comment.setPost(post);
                 comment.setUser(user);
             }
