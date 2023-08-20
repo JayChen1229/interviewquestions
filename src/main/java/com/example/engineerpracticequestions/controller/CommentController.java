@@ -12,7 +12,7 @@ import java.util.List;
 // posts/comments/postId
 
 @RestController
-@RequestMapping("/comments")
+@RequestMapping("api/v1/comments")
 public class CommentController {
 
     @Autowired

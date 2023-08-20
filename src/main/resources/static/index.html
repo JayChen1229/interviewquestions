@@ -57,7 +57,7 @@
     <div v-if="user">
         <!-- 顯示會員頭像和名稱 -->
         <div class="user-profile">
-            <img :src="user.imgUrl + '?rand=' + Math.random()" alt="User Avatar" class="user-avatar img-thumbnail"
+            <img :src="user.imgUrl" alt="User Avatar" class="user-avatar img-thumbnail"
                  @click="openImageUploader(user.userId)">
             <div class="user-info">
                 <p class="user-name">Welcome, {{ user.userName }}</p>
@@ -85,10 +85,10 @@
                 <h5 class="card-title">User: {{ post.user.userName }}</h5>
                 <p class="card-text">Content: {{ post.content }}</p>
                 <!-- 如果有圖片才顯示 -->
-                <img v-if="post.image" :src="'/img/posts/' + post.postId"
+                <img v-if="post.image" :src=`/api/v1/posts/${post.postId}/images`
                      alt="Post Image" class="img-fluid mb-2"
                      style="width: 300px; height: auto; cursor: pointer;"
-                     @click="openImageModal('/img/posts/' + post.postId)">
+                     @click="openImageModal(`/api/v1/posts/${post.postId}/images`)">
                 <p class="card-text">Created At: {{ formatDate(post.createdAt) }}</p>
                 <button v-if="post.user.userId === user.userId" class="btn btn-primary btn-sm" @click="editPost(post)">
                     Edit

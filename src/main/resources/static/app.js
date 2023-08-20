@@ -68,7 +68,7 @@ new Vue({
                         if (response.data) {
                             // 登入成功，放入user資料
                             this.user = response.data;
-                            this.user.imgUrl = '/img/users/' + this.user.userId;
+                            this.user.imgUrl = `/api/v1/users/${this.user.userId}/images`;
                         } else {
                             Swal.fire({
                                 position: 'top',
@@ -90,7 +90,7 @@ new Vue({
             if (this.newPost.content && this.user.userId) {
                 this.newPost.user = this.user;
                 this.newPost.userId = this.user.userId;
-                axios.post('/posts', this.newPost)
+                axios.post('/api/v1/posts', this.newPost)
                     .then(response => {
                         if (response) {
                             Swal.fire({
@@ -144,7 +144,7 @@ new Vue({
             if (this.image) {
                 const formData = new FormData();
                 formData.append('image', this.image);
-                axios.post(`/posts/${postId}/upload`, formData, {
+                axios.post(`/api/v1/posts/${postId}/images`, formData, {
                     headers: {
                         'Content-Type': 'multipart/form-data',
                     },
@@ -171,14 +171,14 @@ new Vue({
             }).then(result => {
                 const formData = new FormData();
                 formData.append('image', result.value);
-                axios.post(`/users/${userId}/upload`, formData, {
+                axios.post(`/api/v1/users/${userId}/images`, formData, {
                     headers: {
                         'Content-Type': 'multipart/form-data',
                     },
                 })
                     .then(response => {
                         // Handle successful image upload
-                        this.user.imgUrl = '/img/users/' + this.user.userId + '?rand=' + Math.random();
+                        this.user.imgUrl = `/api/v1/users/${userId}/images` + '?rand=' + Math.random();
                         Swal.fire({
                             icon: 'success',
                             title: 'uploaded successfully',
@@ -193,7 +193,7 @@ new Vue({
             });
         },
         deletePost(postId) {
-            axios.delete('/posts/' + postId)
+            axios.delete(`/api/v1/posts/${postId}`)
                 .then(response => {
                     if (response) {
                         Swal.fire({
@@ -216,7 +216,7 @@ new Vue({
                 });
         },
         fetchPosts() {
-            axios.get('/posts')
+            axios.get('/api/v1/posts')
                 .then(response => {
                     this.posts = response.data;
                 });
@@ -259,7 +259,7 @@ new Vue({
             }).then((result) => {
                 if (result.isConfirmed) {
                     post.content = result.value;
-                    axios.post('/posts', post)
+                    axios.post('/api/v1/posts', post)
                         .then(response => {
                             if (response) {
                                 Swal.fire({
@@ -300,7 +300,7 @@ new Vue({
                         this.comment.userId = this.user.userId;
                         this.comment.postId = post.postId;
 
-                        axios.post('/comments', this.comment)
+                        axios.post('api/v1/comments', this.comment)
                             .then(response => {
                                 if (response) {
                                     Swal.fire({
@@ -335,7 +335,7 @@ new Vue({
         },
         // 切換顯示/隱藏留言列表
         toggleComments(post) {
-            axios.get(`/posts/${post.postId}/comments`)
+            axios.get(`/api/v1/posts/${post.postId}/comments`)
                 .then(response => {
                     if (response.data) {
                         this.comments = response.data;

@@ -5,6 +5,7 @@ import com.example.engineerpracticequestions.model.Post;
 import com.example.engineerpracticequestions.service.CommentService;
 import com.example.engineerpracticequestions.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -12,7 +13,7 @@ import java.io.IOException;
 import java.util.List;
 
 @RestController
-@RequestMapping("/posts")
+@RequestMapping("/api/v1/posts")
 public class PostController {
 
     @Autowired
@@ -31,7 +32,7 @@ public class PostController {
         return postService.savePost(post);
     }
 
-    @PostMapping("/{postId}/uploadImage") // uploadImage
+    @PostMapping("/{postId}/images")
     public void uploadImage(@PathVariable Long postId, @RequestParam MultipartFile image) {
         Post post = postService.getPostById(postId);
         if (post != null) {
@@ -47,19 +48,21 @@ public class PostController {
         }
     }
 
-//    @GetMapping ("/{postId}")
-//    public List<PostVO> getPost(@PathVariable Long postId) {
-//        return commentService.getCommentsByPost(postId);
-//    }
     @GetMapping("/{postId}/comments")
     public List<Comment> getCommentByPostId(@PathVariable Long postId) {
         return commentService.getCommentsByPost(postId);
     }
     // PostVO = post + commnet
 
-    @DeleteMapping("/{id}")
-    public void deletePost(@PathVariable Long id) {
-        postService.deletePost(id);
+    @DeleteMapping("/{postId}")
+    public void deletePost(@PathVariable Long postId) {
+        postService.deletePost(postId);
+    }
+
+    // 用於指定 {imgUrl} 只能由數字組成。 [0-9] 表示匹配一個數字字符，+ 表示匹配前面的表達式一次或多次。
+    @GetMapping(value = "/{postId}/images", produces = MediaType.IMAGE_GIF_VALUE)
+    public byte[] getImage(@PathVariable Long postId) {
+        return postService.findImg(postId);
     }
 }
 
