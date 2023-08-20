@@ -231,26 +231,33 @@ new Vue({
                 },
                 html: '<p style="font-size: 14px; color: gray;">File size must not exceed 10MB.</p>',
             }).then(result => {
-                const formData = new FormData();
-                formData.append('image', result.value);
-                axios.post(`/api/v1/users/${userId}/images`, formData, {
-                    headers: {
-                        'Content-Type': 'multipart/form-data',
-                    },
-                })
-                    .then(response => {
-                        // Handle successful image upload
-                        this.user.imgUrl = `/api/v1/users/${userId}/images` + '?rand=' + Math.random();
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'uploaded successfully',
-                            showConfirmButton: false,
-                            timer: 1500
-                        })
+                if (result.isConfirmed) {  // 檢查使用者是否點擊上傳按鈕
+                    const formData = new FormData();
+                    formData.append('image', result.value);
+
+                    axios.post(`/api/v1/users/${userId}/images`, formData, {
+                        headers: {
+                            'Content-Type': 'multipart/form-data',
+                        },
                     })
-                    .catch(error => {
-                        console.log("Error from AvatarImageUploader")
-                    });
+                        .then(response => {
+                            this.user.imgUrl = `/api/v1/users/${userId}/images` + '?rand=' + Math.random();
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Uploaded successfully',
+                                showConfirmButton: false,
+                                timer: 1500
+                            });
+                        })
+                        .catch(error => {
+                            console.error("Error from AvatarImageUploader", error);
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Upload failed',
+                                text: 'There was a problem uploading your image. Please try again.'
+                            });
+                        });
+                }
             });
         },
         // 刪除文章
@@ -328,6 +335,7 @@ new Vue({
                 imageUrl: imageUrl,
                 imageAlt: 'Post Image',
                 showConfirmButton: false,
+                showCloseButton: true,
                 customClass: {
                     image: 'img-fluid'
                 },
@@ -431,8 +439,7 @@ new Vue({
                             title: 'Comments',
                             html: commentTable,
                             width: '80%',
-                            showCancelButton: false,
-                            showConfirmButton: true
+                            showCloseButton: true,
                         });
                     } else {
                         console.log("fail");
