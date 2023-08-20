@@ -10,6 +10,7 @@ import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
 
 @Service
@@ -34,9 +35,9 @@ public class CommentService {
                 Post post = postRepository.findPostByCommentId(comment.getCommentId());
                 User user = userRepository.findUserByCommentId(comment.getCommentId());
 
-                if(user.getCoverImage()!= null){
+                if (user.getCoverImage() != null) {
                     user.setImgUrl("/api/v1/users/" + user.getUserId() + "/images");
-                }else {
+                } else {
                     user.setImgUrl("defaultAvatar.png");
                 }
 
@@ -53,12 +54,7 @@ public class CommentService {
     @Transactional
     public Comment saveComment(Comment comment) {
         try {
-            return commentRepository.saveOrUpdateComment(
-                    comment.getCommentId(),
-                    comment.getUserId(),
-                    comment.getPostId(),
-                    comment.getContent()
-            );
+            return commentRepository.saveOrUpdateComment(comment.getCommentId(), comment.getUserId(), comment.getPostId(), comment.getContent());
         } catch (Exception e) {
             logger.error("Error saving comment with id: {}", comment.getCommentId(), e);
             throw new RuntimeException("Error saving comment with id: " + comment.getCommentId(), e);

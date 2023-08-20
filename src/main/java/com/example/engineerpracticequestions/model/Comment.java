@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
                 parameters = {
                         @StoredProcedureParameter(mode = ParameterMode.IN, name = "p_post_id", type = Long.class)
                 },
-                resultClasses = { Comment.class }
+                resultClasses = {Comment.class}
         ),
         @NamedStoredProcedureQuery(
                 name = "SaveOrUpdateComment",
@@ -27,9 +27,8 @@ import java.time.LocalDateTime;
                         @StoredProcedureParameter(mode = ParameterMode.IN, name = "p_post_id", type = Long.class),
                         @StoredProcedureParameter(mode = ParameterMode.IN, name = "p_content", type = String.class)
                 },
-                resultClasses = { Comment.class }
+                resultClasses = {Comment.class}
         )
-
 })
 @Getter
 @Setter

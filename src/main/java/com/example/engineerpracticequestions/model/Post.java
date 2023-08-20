@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
         @NamedStoredProcedureQuery(
                 name = "GetAllPosts",
                 procedureName = "GetAllPosts",
-                resultClasses = { Post.class }
+                resultClasses = {Post.class}
         ),
         @NamedStoredProcedureQuery(
                 name = "FindPostById",
@@ -21,7 +21,7 @@ import java.time.LocalDateTime;
                 parameters = {
                         @StoredProcedureParameter(mode = ParameterMode.IN, name = "p_post_id", type = Long.class)
                 },
-                resultClasses = { Post.class }
+                resultClasses = {Post.class}
         ),
         @NamedStoredProcedureQuery(
                 name = "SaveOrUpdatePost",
@@ -32,7 +32,7 @@ import java.time.LocalDateTime;
                         @StoredProcedureParameter(mode = ParameterMode.IN, name = "p_content", type = String.class),
                         @StoredProcedureParameter(mode = ParameterMode.IN, name = "p_image", type = byte[].class)
                 },
-                resultClasses = { Post.class }
+                resultClasses = {Post.class}
         ),
         @NamedStoredProcedureQuery(
                 name = "FindPostByCommentId",
@@ -40,7 +40,7 @@ import java.time.LocalDateTime;
                 parameters = {
                         @StoredProcedureParameter(mode = ParameterMode.IN, name = "p_comment_id", type = Long.class)
                 },
-                resultClasses = { Post.class }
+                resultClasses = {Post.class}
         ),
         @NamedStoredProcedureQuery(
                 name = "DeletePostAndComments",

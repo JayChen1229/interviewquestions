@@ -9,17 +9,10 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
     @Procedure(name = "EmailExists")
-    Integer  existsByEmail(@Param("p_email") String email);
+    Integer existsByEmail(@Param("p_email") String email);
 
     @Procedure(name = "SaveOrUpdateUser")
-    void saveOrUpdateUser(
-            @Param("p_user_id") Long userId,
-            @Param("p_user_name") String userName,
-            @Param("p_email") String email,
-            @Param("p_password") String password,
-            @Param("p_cover_image") byte[] coverImage,
-            @Param("p_biography") String biography
-    );
+    void saveOrUpdateUser(@Param("p_user_id") Long userId, @Param("p_user_name") String userName, @Param("p_email") String email, @Param("p_password") String password, @Param("p_cover_image") byte[] coverImage, @Param("p_biography") String biography);
 
     @Procedure(name = "FindUserByEmail")
     User findByEmail(@Param("p_email") String email);
@@ -37,11 +30,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
     User findUserByCommentId(@Param("p_comment_id") Long commentId);
 
     @Procedure(name = "UpdateUserBiography")
-    void updateUserBiography(
-            @Param("p_user_id") Long userId,
-            @Param("p_biography") String biography
-    );
-
+    void updateUserBiography(@Param("p_user_id") Long userId, @Param("p_biography") String biography);
 
 
 }

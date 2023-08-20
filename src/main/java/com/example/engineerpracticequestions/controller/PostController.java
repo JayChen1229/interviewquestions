@@ -20,7 +20,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/posts")
 public class PostController {
-
     private final PostService postService;
     private final CommentService commentService;
     private final Logger logger = LoggerFactory.getLogger(getClass());
@@ -36,6 +35,7 @@ public class PostController {
         List<Post> posts = postService.getAllPosts();
         return ResponseEntity.ok(posts);
     }
+
     @PostMapping
     public ResponseEntity<Post> createPost(@RequestBody Post post) {
         // 驗證並清理用戶輸入
@@ -62,14 +62,17 @@ public class PostController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Image upload failed");
         }
     }
+
     @GetMapping("/{postId}/comments")
     public List<Comment> getCommentByPostId(@PathVariable Long postId) {
         return commentService.getCommentsByPost(postId);
     }
+
     @DeleteMapping("/{postId}")
     public void deletePost(@PathVariable Long postId) {
         postService.deletePostAndComments(postId);
     }
+
     @GetMapping(value = "/{postId}/images", produces = MediaType.IMAGE_GIF_VALUE)
     public byte[] getImage(@PathVariable Long postId) {
         return postService.findImg(postId);

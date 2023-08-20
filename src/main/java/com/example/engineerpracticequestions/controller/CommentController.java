@@ -10,7 +10,6 @@ import org.springframework.web.util.HtmlUtils;
 @RestController
 @RequestMapping("api/v1/comments")
 public class CommentController {
-
     private final CommentService commentService;
 
     @Autowired

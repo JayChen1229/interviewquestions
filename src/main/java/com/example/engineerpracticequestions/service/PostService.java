@@ -51,12 +51,7 @@ public class PostService {
     @Transactional
     public Post savePost(Post post) {
         try {
-            return postRepository.saveOrUpdatePost(
-                    post.getPostId(),
-                    post.getUserId(),
-                    post.getContent(),
-                    post.getImage()
-            );
+            return postRepository.saveOrUpdatePost(post.getPostId(), post.getUserId(), post.getContent(), post.getImage());
         } catch (Exception e) {
             logger.error("Error saving post with id: {}", post.getPostId(), e);
             throw new RuntimeException("Error saving post with id: " + post.getPostId(), e);

@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.query.Procedure;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+
 import java.util.List;
 
 @Repository
@@ -16,18 +17,11 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     Post findPostById(@Param("p_post_id") Long postId);
 
     @Procedure(name = "SaveOrUpdatePost")
-    Post saveOrUpdatePost(
-            @Param("p_post_id") Long postId,
-            @Param("p_user_id") Long userId,
-            @Param("p_content") String content,
-            @Param("p_image") byte[] image
-    );
+    Post saveOrUpdatePost(@Param("p_post_id") Long postId, @Param("p_user_id") Long userId, @Param("p_content") String content, @Param("p_image") byte[] image);
 
     @Procedure(name = "FindPostByCommentId")
     Post findPostByCommentId(@Param("p_comment_id") Long commentId);
 
     @Procedure(name = "DeletePostAndComments")
-    void deletePostAndComments(
-            @Param("p_post_id") Long postId
-    );
+    void deletePostAndComments(@Param("p_post_id") Long postId);
 }

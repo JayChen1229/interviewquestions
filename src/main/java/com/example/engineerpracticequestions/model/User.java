@@ -6,15 +6,14 @@ import lombok.Setter;
 import lombok.ToString;
 
 @Entity
-@NamedStoredProcedureQueries({
-        @NamedStoredProcedureQuery(
-                name = "FindUserById",
-                procedureName = "FindUserById",
-                resultClasses = User.class,
-                parameters = {
-                        @StoredProcedureParameter(mode = ParameterMode.IN, name = "p_user_id", type = Integer.class)
-                }
-        ),
+@NamedStoredProcedureQueries({@NamedStoredProcedureQuery(
+        name = "FindUserById",
+        procedureName = "FindUserById",
+        resultClasses = User.class,
+        parameters = {
+                @StoredProcedureParameter(mode = ParameterMode.IN, name = "p_user_id", type = Integer.class)
+        }
+),
         @NamedStoredProcedureQuery(
                 name = "SaveOrUpdateUser",
                 procedureName = "SaveOrUpdateUser",
@@ -25,7 +24,6 @@ import lombok.ToString;
                         @StoredProcedureParameter(mode = ParameterMode.IN, name = "p_password", type = String.class),
                         @StoredProcedureParameter(mode = ParameterMode.IN, name = "p_cover_image", type = byte[].class),
                         @StoredProcedureParameter(mode = ParameterMode.IN, name = "p_biography", type = String.class)
-                        // Add all other parameters...
                 }
         ),
         @NamedStoredProcedureQuery(
@@ -66,7 +64,7 @@ import lombok.ToString;
                 parameters = {
                         @StoredProcedureParameter(mode = ParameterMode.IN, name = "p_comment_id", type = Long.class)
                 },
-                resultClasses = { User.class }
+                resultClasses = {User.class}
         ),
         @NamedStoredProcedureQuery(
                 name = "UpdateUserBiography",
